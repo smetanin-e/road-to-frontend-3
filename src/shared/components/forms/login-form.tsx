@@ -1,14 +1,15 @@
 'use client';
-import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-
-import { Button, Label } from '@/shared/ui';
-import { FormInput } from '@/shared/components';
-import { loginFormSchema, LoginFormType } from '@/shared/schemas';
 import toast from 'react-hot-toast';
+
 import { useRouter } from 'next/navigation';
 import { signIn } from '@/shared/services';
+import { loginFormSchema, LoginFormType } from '@/shared/schemas';
+
+import { FormInput } from '@/shared/components';
+import { Button, Label } from '@/shared/ui';
 
 interface Props {
   className?: string;

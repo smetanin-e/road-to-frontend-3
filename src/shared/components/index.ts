@@ -11,3 +11,5 @@ export { AuthModal } from './auth-modal';
 export { Login } from './login';
 export { Providers } from './providers';
 export * from './forms';
+
+export { ProfileButton } from './prifile-button';

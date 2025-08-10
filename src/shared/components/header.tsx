@@ -1,12 +1,16 @@
 'use client';
+import React from 'react';
+
+import toast from 'react-hot-toast';
+import { Heart, ShoppingCart, Menu } from 'lucide-react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
-import { Badge, Button, Input } from '@/shared/ui';
-import { Heart, ShoppingCart, Menu } from 'lucide-react';
-import { Container, Login } from '@/shared/components';
+
 import { logout } from '@/shared/services';
-import toast from 'react-hot-toast';
+import { Container, Login, ProfileButton } from '@/shared/components';
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/ui';
+
 import { useUserStore } from '@/store/user';
 
 interface Props {
@@ -48,7 +52,7 @@ export const Header: React.FC<Props> = () => {
               </Button>
             </div>
           </div>
-          <div className='flex gap-9'>
+          <div className='flex gap-9 items-end'>
             <Link href={'/cart'}>
               <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
                 <div className='relative'>
@@ -71,7 +75,10 @@ export const Header: React.FC<Props> = () => {
                 <span>Избранное</span>
               </div>
             </Link>
-            {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>}
+
+            <ProfileButton name='Евгений Сметани' />
+
+            {/* {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>} */}
           </div>
         </div>
         {/* навигация */}

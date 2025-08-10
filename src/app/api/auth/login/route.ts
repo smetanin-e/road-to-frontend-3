@@ -1,8 +1,7 @@
-import { setAccessTokenCookie, setRefreshTokenCookie } from '@/shared/lib';
-
-import { loginFormSchema } from '@/shared/schemas';
-import { loginUser, generateAccessToken } from '@/shared/services';
 import { NextResponse } from 'next/server';
+import { loginUser, generateAccessToken } from '@/shared/services';
+import { loginFormSchema } from '@/shared/schemas';
+import { setAccessTokenCookie, setRefreshTokenCookie } from '@/shared/lib';
 
 export async function POST(req: Request) {
   try {

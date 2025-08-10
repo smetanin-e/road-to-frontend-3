@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Heart, ShoppingCart } from 'lucide-react';
-
 import { Badge, Button, Card, CardContent } from '@/shared/ui';
 interface Props {
   className?: string;

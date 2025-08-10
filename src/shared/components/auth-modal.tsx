@@ -1,3 +1,5 @@
+import React from 'react';
+import { LoginForm, RegisterForm } from '@/shared/components';
 import {
   Dialog,
   DialogContent,
@@ -7,10 +9,6 @@ import {
   DialogDescription,
   Button,
 } from '@/shared/ui';
-
-import React from 'react';
-import { LoginForm, RegisterForm } from '@/shared/components';
-
 interface Props {
   className?: string;
   open: boolean;

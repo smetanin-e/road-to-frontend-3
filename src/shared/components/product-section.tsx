@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { Container, ProductsContainer } from '@/shared/components';
 import { ArrowRight } from 'lucide-react';
+import { Container, ProductsContainer } from '@/shared/components';
 import { Button } from '@/shared/ui';
 
 interface Props {

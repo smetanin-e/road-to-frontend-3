@@ -1,6 +1,6 @@
 'use client';
-import { User } from 'lucide-react';
 import React from 'react';
+import { User } from 'lucide-react';
 import { AuthModal } from './auth-modal';
 
 interface Props {

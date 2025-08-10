@@ -1,6 +1,6 @@
-import { getRefreshTokenFromCookies } from '@/shared/lib';
-import { generateAccessToken, validateRefreshToken } from '@/shared/services';
 import { NextRequest, NextResponse } from 'next/server';
+import { generateAccessToken, validateRefreshToken } from '@/shared/services';
+import { getRefreshTokenFromCookies } from '@/shared/lib';
 
 export async function GET(req: NextRequest) {
   try {

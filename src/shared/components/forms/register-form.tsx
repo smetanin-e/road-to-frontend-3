@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
-import { FormInput } from '@/shared/components';
 
-import { Button, Label } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-
 import { FormProvider, useForm } from 'react-hook-form';
-import { registerFormSchema, RegisterFormType } from '@/shared/schemas';
 
 import { useRouter } from 'next/navigation';
 import { registerUser } from '@/shared/services';
+import { registerFormSchema, RegisterFormType } from '@/shared/schemas';
+
+import { FormInput } from '@/shared/components';
+import { Button, Label } from '@/shared/ui';
 
 interface Props {
   className?: string;
@@ -33,16 +33,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
 
   const onSubmit = async (data: RegisterFormType) => {
     try {
-      //   const payload = {
-      //     email: data.email,
-      //     phone: data.phone,
-      //     firstName: data.firstName,
-      //     lastName: data.lastName,
-      //     password: data.password,
-      //   };
-      //   await createUser(data);
       await registerUser(data);
-
       onClose?.();
       // router.push('/private');
       toast.success('Вы успешно зарегистрированы!!!', { icon: '✅' });
