@@ -1,5 +1,14 @@
-import { User } from '@prisma/client';
+import axios from 'axios';
 import { axiosInstance } from './instance';
+
+type User = {
+  id: string;
+  email: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+} | null;
 
 export async function refreshAccessToken(): Promise<User | false> {
   try {
@@ -13,6 +22,11 @@ export async function refreshAccessToken(): Promise<User | false> {
 
     return res.data.user;
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Если 401 — значит токен невалиден или нет пользователя — возвращаем false
+      console.warn('Refresh token невалиден или отсутствует');
+      return false;
+    }
     console.error('Ошибка в refreshAccessToken:', error);
     return false;
   }

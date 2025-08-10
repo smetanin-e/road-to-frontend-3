@@ -24,7 +24,13 @@ export const Header: React.FC<Props> = () => {
         <div className='flex gap-4 justify-between items-center'>
           <Link href='/'>
             <div className='flex items-center'>
-              <Image className='shrink-0' src={'/logo.png'} alt={'logo'} width={90} height={50} />
+              <Image
+                className='shrink-0 w-[90px] h-[50px]'
+                src={'/logo.png'}
+                alt={'logo'}
+                width={90}
+                height={50}
+              />
             </div>
           </Link>
 

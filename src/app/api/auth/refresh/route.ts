@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       role: user.role,
     });
 
-    const response = NextResponse.json({ success: true, accessToken });
+    const response = NextResponse.json({ success: true, accessToken, user });
     response.cookies.set('access_token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
