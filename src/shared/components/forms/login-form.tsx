@@ -28,6 +28,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
   const onSubmit = async (data: LoginFormType) => {
     try {
       await signIn(data);
+
       onClose?.();
       router.push('/');
       toast.success('Вы успешно вошли в аккаунт', { icon: '✅' });

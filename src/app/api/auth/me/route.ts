@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
       path: '/',
     });
 
-    console.log(NextResponse.json(user));
     if (!user) {
       throw new Error('Пользователь не авторизован');
     }

@@ -21,9 +21,6 @@ export function generateAccessToken(payload: { userId: string; role: string }) {
     },
   );
 
-  console.log('Создаю accessToken для:', payload);
-  console.log('accessToken:', token);
-
   return token;
 }
 

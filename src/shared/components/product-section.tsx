@@ -3,22 +3,19 @@ import React from 'react';
 import { Container, ProductsContainer } from '@/shared/components';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/shared/ui';
-import { useUserStore } from '@/store/user';
 
 interface Props {
   className?: string;
 }
 
 export const ProductSection: React.FC<Props> = () => {
-  const { user } = useUserStore();
-  console.log(user);
   return (
     <div className='mt-10 '>
       <Container>
         {/* Шапка */}
         <div className='mb-4 flex justify-between items-end'>
           <h2 className='text-4xl'>Новинки</h2>
-          <p>{user ? `есть пользователь: ${user.email}` : 'нет пользователя'}</p>
+
           <Button variant='ghost' className='group relative flex hover:bg-transparent'>
             <span className='pr-6'>Все новинки </span>
             <ArrowRight

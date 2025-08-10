@@ -7,12 +7,15 @@ import { Heart, ShoppingCart, Menu } from 'lucide-react';
 import { Container, Login } from '@/shared/components';
 import { logout } from '../services/logout-user';
 import toast from 'react-hot-toast';
+import { useUserStore } from '@/store/user';
 
 interface Props {
   className?: string;
 }
 
 export const Header: React.FC<Props> = () => {
+  const user = useUserStore((state) => state.user);
+
   const signOut = async () => {
     await logout();
     toast.success('Вы вышли из аккаунта');
@@ -46,7 +49,7 @@ export const Header: React.FC<Props> = () => {
             </div>
           </div>
           <div className='flex gap-9'>
-            <Link href={'/'}>
+            <Link href={'/cart'}>
               <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
                 <div className='relative'>
                   <Badge className='rounded-full absolute top-0 right-0 translate-x-[90%] translate-y-[-50%] transition-transform duration-300 group-hover:translate-y-[-70%]'>
@@ -68,10 +71,7 @@ export const Header: React.FC<Props> = () => {
                 <span>Избранное</span>
               </div>
             </Link>
-
-            <Login />
-
-            <Button onClick={signOut}>выход</Button>
+            {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>}
           </div>
         </div>
         {/* навигация */}
