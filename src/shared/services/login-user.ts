@@ -1,0 +1,18 @@
+import { LoginFormType } from '@/shared/schemas';
+import axios from 'axios';
+import { axiosInstance } from './instance';
+
+export async function signIn(data: LoginFormType) {
+  try {
+    const res = await axiosInstance.post<LoginFormType>('auth/login', data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.error || 'Ошибка входа');
+    }
+    throw error;
+  }
+}

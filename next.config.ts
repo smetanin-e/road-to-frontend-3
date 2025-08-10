@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      'cv8.litres.ru', // <- текущий источник
+      'example.com', // <- добавляй другие нужные хосты
+      'another-host.com',
+    ],
+  },
 };
 
 export default nextConfig;
