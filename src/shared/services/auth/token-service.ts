@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { User } from '@prisma/client';
-import { prisma } from '../lib/prisma-client';
+import { prisma } from '@/shared/lib';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 

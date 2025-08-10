@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { registerFormSchema, RegisterFormType } from '@/shared/schemas';
 
 import { useRouter } from 'next/navigation';
-import { registerUser } from '@/shared/services/register-user';
+import { registerUser } from '@/shared/services';
 
 interface Props {
   className?: string;

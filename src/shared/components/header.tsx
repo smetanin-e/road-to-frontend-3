@@ -5,7 +5,7 @@ import React from 'react';
 import { Badge, Button, Input } from '@/shared/ui';
 import { Heart, ShoppingCart, Menu } from 'lucide-react';
 import { Container, Login } from '@/shared/components';
-import { logout } from '../services/logout-user';
+import { logout } from '@/shared/services';
 import toast from 'react-hot-toast';
 import { useUserStore } from '@/store/user';
 

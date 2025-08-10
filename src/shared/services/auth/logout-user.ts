@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { axiosInstance } from './instance';
+import { axiosInstance } from '../instance';
 import { useUserStore } from '@/store/user';
 
 export async function logout() {

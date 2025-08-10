@@ -1,7 +1,7 @@
 'use server';
 import { User } from '@prisma/client';
 import { cookies } from 'next/headers';
-import { axiosInstance } from './instance';
+import { axiosInstance } from '../instance';
 
 export async function getMeServer(): Promise<User | null> {
   try {
@@ -25,20 +25,3 @@ export async function getMeServer(): Promise<User | null> {
     return null;
   }
 }
-
-// export async function getMeServer(): Promise<User | null> {
-//   try {
-//     const refreshToken = (await cookies()).get('refresh_token')?.value;
-//     const accessToken = (await cookies()).get('access_token')?.value;
-//     if (!refreshToken || !accessToken) return null;
-
-//     const session = await prisma.session.findUnique({
-//       where: { refreshToken },
-//       include: { user: true },
-//     });
-
-//     return session?.user ?? null;
-//   } catch {
-//     return null;
-//   }
-// }

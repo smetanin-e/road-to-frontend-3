@@ -1,7 +1,6 @@
 import { LoginFormType } from '@/shared/schemas';
 import axios from 'axios';
-import { axiosInstance } from './instance';
-import { getMe } from './get-me';
+import { axiosInstance, getMe } from '@/shared/services';
 import { useUserStore } from '@/store/user';
 
 export async function signIn(data: LoginFormType) {

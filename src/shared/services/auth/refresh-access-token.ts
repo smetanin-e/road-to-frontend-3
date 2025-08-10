@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { axiosInstance } from './instance';
+import { axiosInstance } from '../instance';
 
 type User = {
   id: string;

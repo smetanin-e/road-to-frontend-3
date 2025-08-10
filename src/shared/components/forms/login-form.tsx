@@ -8,7 +8,7 @@ import { FormInput } from '@/shared/components';
 import { loginFormSchema, LoginFormType } from '@/shared/schemas';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { signIn } from '@/shared/services/login-user';
+import { signIn } from '@/shared/services';
 
 interface Props {
   className?: string;

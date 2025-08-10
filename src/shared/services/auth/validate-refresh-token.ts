@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma-client';
+import { prisma } from '@/shared/lib';
 
 export async function validateRefreshToken(refreshToken: string) {
   const session = await prisma.session.findUnique({

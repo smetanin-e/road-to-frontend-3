@@ -1,8 +1,7 @@
 'use server';
 import { Prisma } from '@prisma/client';
-import { generateSalt, hashPassword, verifyPassword } from '../lib/passwordHasher';
-import { prisma } from '../lib/prisma-client';
-import { generateRefreshToken } from './token-service';
+import { prisma, generateSalt, hashPassword, verifyPassword } from '@/shared/lib';
+import { generateRefreshToken } from '@/shared/services';
 
 const SESSION_EXPIRATION_SECONDS = 60 * 60 * 24 * 7;
 

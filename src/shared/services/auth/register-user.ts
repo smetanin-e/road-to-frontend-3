@@ -1,6 +1,6 @@
 import { RegisterFormType } from '@/shared/schemas';
 import axios from 'axios';
-import { axiosInstance } from './instance';
+import { axiosInstance } from '../instance';
 
 export async function registerUser(data: RegisterFormType) {
   try {

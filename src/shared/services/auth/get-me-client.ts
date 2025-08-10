@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import { axiosInstance } from './instance';
+import { axiosInstance } from '@/shared/services';
 
 export async function getMeClient(): Promise<User | null> {
   try {
