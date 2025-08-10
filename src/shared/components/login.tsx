@@ -27,7 +27,7 @@ export const Login: React.FC<Props> = () => {
         className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg cursor-pointer'
       >
         <User className='h-8 w-8' />
-        <span>Аккаунт</span>
+        <span>Вход</span>
       </div>
       <AuthModal open={open} onClose={onClose} type={type} onSwitchType={onSwitchType} />
     </div>
