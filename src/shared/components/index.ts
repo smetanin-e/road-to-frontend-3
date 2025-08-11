@@ -10,6 +10,8 @@ export { RequiredSymbol } from './required-symbol';
 export { AuthModal } from './auth-modal';
 export { Login } from './login';
 export { Providers } from './providers';
+export { CatalogDrawer } from './catalog-drawer';
+export { CatalogItem } from './catalog-item';
 export * from './forms';
 
 export { ProfileButton } from './prifile-button';

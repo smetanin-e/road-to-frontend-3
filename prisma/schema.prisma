@@ -32,3 +32,24 @@ enum UserRole {
     USER
     ADMIN
 }
+
+model Category {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+    slug String @unique
+
+    subcategories SubCategory[]
+
+    //books Book[]
+}
+
+model SubCategory {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+    slug String @unique
+
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    //books Book[]
+}

@@ -1,1 +1,5 @@
-export const Api = {};
+import * as categories from './categories';
+
+export const Api = {
+  categories,
+};

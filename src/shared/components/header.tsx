@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { logout } from '@/shared/services';
-import { Container, Login, ProfileButton } from '@/shared/components';
+import { CatalogDrawer, Container, Login, ProfileButton } from '@/shared/components';
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/ui';
 
 import { useUserStore } from '@/store/user';
@@ -76,17 +76,20 @@ export const Header: React.FC<Props> = () => {
               </div>
             </Link>
 
-            <ProfileButton name='Евгений Сметани' />
+            {/* <ProfileButton name='Евгений Сметани' /> */}
 
-            {/* {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>} */}
+            {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>}
           </div>
         </div>
         {/* навигация */}
         <nav className='flex items-center gap-8 text-s pt-4'>
-          <div className='flex items-center gap-2 text-teal-600 font-semibold cursor-pointer'>
-            <Menu className='h-6 w-6' />
-            КАТЕГОРИИ
-          </div>
+          <CatalogDrawer>
+            <Button variant='outline' className='gap-2 bg-transparent'>
+              <Menu className='h-6 w-6' />
+              Категории
+            </Button>
+          </CatalogDrawer>
+
           <span className='cursor-pointer hover:text-teal-600'>Новинки</span>
           <span className='cursor-pointer hover:text-teal-600'>Бестселлеры</span>
           <span className='cursor-pointer hover:text-teal-600'>Специальное предложение</span>

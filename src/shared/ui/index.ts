@@ -13,3 +13,5 @@ export * from './carousel';
 export * from './tabs';
 export * from './avatar';
 export * from './dialog';
+export * from './sheet';
+export * from './collapsible';
