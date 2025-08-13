@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
       'example.com', // <- добавляй другие нужные хосты
       'another-host.com',
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+    ],
   },
 };
 

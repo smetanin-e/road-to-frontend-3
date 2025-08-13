@@ -20,7 +20,7 @@ export default async function Home() {
   console.log(books);
   return (
     <div className='min-h-screen bg-background'>
-      <ProductSection books={books} />
+      <ProductSection />
       {/* <ProductSection /> */}
 
       <p>content</p>
