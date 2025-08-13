@@ -40,7 +40,7 @@ model Category {
 
     subcategories SubCategory[]
 
-    //books Book[]
+    books Book[]
 }
 
 model SubCategory {
@@ -51,5 +51,54 @@ model SubCategory {
     categoryId Int
     category   Category @relation(fields: [categoryId], references: [id])
 
-    //books Book[]
+    books Book[]
+}
+
+model Tag {
+    id   Int    @id @default(autoincrement())
+    name String
+    slug String
+
+    books Book[]
+}
+
+model Book {
+    id          Int    @id @default(autoincrement())
+    title       String
+    description String
+
+    price Int
+    sale  Int?
+
+    //rating      Rating?
+    tags Tag[]
+
+    subcategoryId Int
+    subcategory   SubCategory @relation(fields: [subcategoryId], references: [id])
+
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    //cartItem   CartItem[]
+
+    // Связь с изображениями
+    images BookImage[]
+
+    authorId Int
+    author   Author @relation(fields: [authorId], references: [id])
+}
+
+model BookImage {
+    id  Int    @id @default(autoincrement())
+    url String
+
+    bookId Int
+    book   Book @relation(fields: [bookId], references: [id])
+}
+
+model Author {
+    id          Int     @id @default(autoincrement())
+    name        String
+    description String?
+    books       Book[]
 }

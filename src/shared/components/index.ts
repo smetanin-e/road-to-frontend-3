@@ -12,6 +12,7 @@ export { Login } from './login';
 export { Providers } from './providers';
 export { CatalogDrawer } from './catalog-drawer';
 export { CatalogItem } from './catalog-item';
+export { HeaderMenu } from './header-menu';
 export * from './forms';
 
 export { ProfileButton } from './prifile-button';

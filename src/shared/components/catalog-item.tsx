@@ -1,9 +1,17 @@
 'use client';
 import { useState } from 'react';
-import { Badge, Button, Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/ui';
+import {
+  Badge,
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  SheetClose,
+} from '@/shared/ui';
 import { ChevronDown, ChevronRight, BookOpenCheck, LibraryBig } from 'lucide-react';
 
 import { CatalogDTO } from '../services/dto/catalog.dto';
+import Link from 'next/link';
 
 interface CategoryItemProps {
   category: CatalogDTO;
@@ -17,20 +25,25 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
     <div className='border-b border-gray-100 last:border-b-0'>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div className='flex items-center justify-between py-3 px-1'>
-          <Button
-            variant='ghost'
-            onClick={() => onCategorySelect(category.id)}
-            // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
-            className=' flex items-center gap-3 flex-1 text-left hover:text-blue-600 hover:bg-transparent transition-colors'
-          >
-            {/* {category.icon} */}
-            <LibraryBig />
-            <span className='font-medium'>{category.name}</span>
-            <Badge variant='secondary' className='ml-auto mr-2'>
-              {/* {category.count} */}
-              10
-            </Badge>
-          </Button>
+          <SheetClose asChild>
+            <Link href={`/${category.slug}`}>
+              <Button
+                variant='ghost'
+                onClick={() => onCategorySelect(category.id)}
+                // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
+                className=' flex items-center gap-3 flex-1 text-left hover:text-blue-600 hover:bg-transparent transition-colors'
+              >
+                {/* {category.icon} */}
+                <LibraryBig />
+                <span className='font-medium'>{category.name}</span>
+              </Button>
+            </Link>
+          </SheetClose>
+
+          <Badge variant='secondary' className='ml-auto mr-2'>
+            {/* {category.count} */}
+            10
+          </Badge>
 
           {category.subcategories && (
             <CollapsibleTrigger asChild>
@@ -50,22 +63,28 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
             <div className='ml-7 space-y-2'>
               {category.subcategories &&
                 category.subcategories.map((subcategory) => (
-                  <Button
-                    variant='ghost'
-                    key={subcategory.id}
-                    onClick={() => onCategorySelect(category.id, subcategory.id)}
-                    // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
-                    className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
-                  >
-                    <div className='flex items-center gap-5'>
-                      <BookOpenCheck />
-                      <span>{subcategory.name}</span>
-                    </div>
-
+                  <div key={subcategory.id} className='flex items-center justify-between'>
+                    {' '}
+                    <SheetClose asChild>
+                      <Link href={`/${subcategory.slug}`}>
+                        {' '}
+                        <Button
+                          variant='ghost'
+                          onClick={() => onCategorySelect(category.id, subcategory.id)}
+                          // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
+                          className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
+                        >
+                          <div className='flex items-center gap-5'>
+                            <BookOpenCheck />
+                            <span>{subcategory.name}</span>
+                          </div>
+                        </Button>
+                      </Link>
+                    </SheetClose>
                     <Badge variant='outline' className='text-xs'>
                       {/* {subcategory.count} */}5
                     </Badge>
-                  </Button>
+                  </div>
                 ))}
             </div>
           </CollapsibleContent>

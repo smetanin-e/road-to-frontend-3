@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 
-export const ProductSection: React.FC<Props> = () => {
+export const ProductSection: React.FC<Props> = ({ books }) => {
   return (
     <div className='mt-10 '>
       <Container>
@@ -26,7 +26,7 @@ export const ProductSection: React.FC<Props> = () => {
         </div>
 
         {/* контент */}
-        <ProductsContainer />
+        <ProductsContainer books={books} />
       </Container>
     </div>
   );

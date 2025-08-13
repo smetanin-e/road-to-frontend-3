@@ -12,7 +12,7 @@ interface Props {
   className?: string;
 }
 
-export const ProductsContainer: React.FC<Props> = () => {
+export const ProductsContainer: React.FC<Props> = ({ books }) => {
   return (
     <Carousel
       opts={{

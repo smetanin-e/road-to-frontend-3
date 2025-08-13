@@ -30,3 +30,31 @@ export const subcategories = [
   { name: 'Тест1', categoryId: 5 },
   { name: 'Тест2', categoryId: 5 },
 ];
+
+export const tags = [
+  { name: 'Новинки' },
+  { name: 'Бестселлеры' },
+  { name: 'Специальное предложение' },
+];
+
+export const books = [
+  {
+    id: 1,
+    title: '',
+    imageUrl: '',
+    description: '',
+    price: '',
+    sale: '',
+
+    author: '',
+
+    //характеристики
+    //рейтинг
+    //отзывы
+    //автор
+
+    //Категория
+    //Подкатегория
+    //Теги
+  },
+];
