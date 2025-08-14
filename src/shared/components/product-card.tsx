@@ -1,25 +1,29 @@
 import Image from 'next/image';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { Badge, Button, Card, CardContent } from '@/shared/ui';
+import { BookDTO } from '../services/dto/book-cards.dto';
 interface Props {
   className?: string;
-  title?: string;
+  book: BookDTO;
 }
-export const ProductCard: React.FC<Props> = ({ title }) => {
+export const ProductCard: React.FC<Props> = ({ book }) => {
   return (
     <Card className='w-full max-w-[280px] h-full p-0  overflow-hidden group hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-0 flex flex-col h-full '>
         <div className='relative'>
           <Image
-            src='https://cv8.litres.ru/pub/c/elektronnaya-kniga/cover_415/4989181-mihail-krechmar-mohnatyy-bog.webp'
+            src={book.images[0].url}
             alt='Мастер и Маргарита'
             width={200}
             height={320}
             className='w-full h-80 object-cover'
           />
-          <Badge className='absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white'>
-            -25%
-          </Badge>
+          {book.sale && (
+            <Badge className='absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white'>
+              {book.sale} %
+            </Badge>
+          )}
+
           <Button
             size='icon'
             variant='ghost'
@@ -32,15 +36,17 @@ export const ProductCard: React.FC<Props> = ({ title }) => {
 
         <div className='p-4 space-y-3 flex flex-col flex-grow'>
           <div className='space-y-1'>
-            <h3 className='font-semibold text-lg leading-tight line-clamp-2'>
-              {title ? title : 'Мастер и Маргарита'}
-            </h3>
-            <p className='text-sm text-muted-foreground'>Михаил Булгаков</p>
+            <h3 className='font-semibold text-lg leading-tight line-clamp-2'>{book.title}</h3>
+            <p className='text-sm text-muted-foreground'>{book.author.name}</p>
           </div>
 
           <div className='flex items-center gap-2 mt-auto'>
-            <span className='text-2xl font-bold text-primary'>750 ₽</span>
-            <span className='text-sm text-muted-foreground line-through'>1000 ₽</span>
+            <span className='text-2xl font-bold text-primary'>{book.price} ₽</span>
+            {book.sale && (
+              <span className='text-sm text-muted-foreground line-through'>
+                {Math.ceil(book.price / (1 - book.sale / 100))} ₽
+              </span>
+            )}
           </div>
 
           <Button className='w-full ' size='lg'>

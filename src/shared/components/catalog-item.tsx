@@ -26,7 +26,7 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div className='flex items-center justify-between py-3 px-1'>
           <SheetClose asChild>
-            <Link href={`/${category.slug}`}>
+            <Link href={`/products/${category.slug}`}>
               <Button
                 variant='ghost'
                 onClick={() => onCategorySelect(category.id)}
@@ -66,7 +66,7 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
                   <div key={subcategory.id} className='flex items-center justify-between'>
                     {' '}
                     <SheetClose asChild>
-                      <Link href={`/${subcategory.slug}`}>
+                      <Link href={`/products/${subcategory.slug}`}>
                         {' '}
                         <Button
                           variant='ghost'

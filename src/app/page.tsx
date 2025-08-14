@@ -1,29 +1,19 @@
 import { ProductSection } from '@/shared/components';
-import { prisma } from '@/shared/lib';
+import { Api } from '@/shared/services';
 
 import React from 'react';
 
 export default async function Home() {
-  const books = await prisma.book.findMany({
-    where: {
-      tags: {
-        some: { id: 1 },
-      },
-    },
-    include: {
-      author: true,
-      images: true,
-      tags: true,
-    },
-  });
+  const booksByTags = await Api.cards.getCards();
+  console.log(booksByTags);
 
-  console.log(books);
   return (
     <div className='min-h-screen bg-background'>
-      <ProductSection />
-      {/* <ProductSection /> */}
+      {booksByTags.map((tag) => (
+        <ProductSection key={tag.id} data={tag} />
+      ))}
 
-      <p>content</p>
+      <p></p>
     </div>
   );
 }

@@ -2,9 +2,9 @@
 import React from 'react';
 import { CatalogDrawer } from '@/shared/components';
 import { Button } from '@/shared/ui';
-import { Divide, Menu } from 'lucide-react';
 import { useTagsStore } from '@/store/tags';
 import Link from 'next/link';
+import { Menu } from 'lucide-react';
 interface Props {
   className?: string;
 }
@@ -27,7 +27,11 @@ export const HeaderMenu: React.FC<Props> = () => {
         <div>Загрузка...</div>
       ) : (
         tags.map((tag) => (
-          <Link href={`/${tag.slug}`} key={tag.id} className='cursor-pointer hover:text-teal-600'>
+          <Link
+            href={`/products/${tag.slug}`}
+            key={tag.id}
+            className='cursor-pointer hover:text-teal-600'
+          >
             {tag.name}
           </Link>
         ))

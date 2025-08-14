@@ -34,7 +34,7 @@ export const subcategories = [
 export const tags = [
   { name: 'Новинки' },
   { name: 'Бестселлеры' },
-  { name: 'Специальное предложение' },
+  { name: 'Специальные предложения' },
 ];
 
 export const books = [
