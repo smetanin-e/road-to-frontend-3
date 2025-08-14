@@ -71,8 +71,8 @@ model Book {
     sale  Int?
 
     //rating      Rating?
-    tags Tag[]
 
+    tags          Tag[]
     subcategoryId Int
     subcategory   SubCategory @relation(fields: [subcategoryId], references: [id])
 
@@ -89,11 +89,14 @@ model Book {
 }
 
 model BookImage {
-    id  Int    @id @default(autoincrement())
-    url String
+    id    Int    @id @default(autoincrement())
+    url   String
+    order Int    @default(0)
 
     bookId Int
     book   Book @relation(fields: [bookId], references: [id])
+
+    @@unique([bookId, order]) // уникальность порядка в рамках одной книги
 }
 
 model Author {

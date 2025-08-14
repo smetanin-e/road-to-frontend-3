@@ -192,8 +192,18 @@ async function generateData() {
             tags: { connect: randomFromArray([{ id: 1 }, { id: 2 }, { id: 3 }], randomInt(1, 3)) },
             images: {
               create: [
-                { url: `https://picsum.photos/seed/${encodeURIComponent(title)}-1/400/600` },
-                { url: `https://picsum.photos/seed/${encodeURIComponent(title)}-2/400/600` },
+                {
+                  url: `https://picsum.photos/seed/${encodeURIComponent(title)}-1/400/600`,
+                  order: 0,
+                },
+                {
+                  url: `https://picsum.photos/seed/${encodeURIComponent(title)}-2/400/600`,
+                  order: 1,
+                },
+                {
+                  url: `https://picsum.photos/seed/${encodeURIComponent(title)}-3/400/600`,
+                  order: 2,
+                },
               ],
             },
           })),
