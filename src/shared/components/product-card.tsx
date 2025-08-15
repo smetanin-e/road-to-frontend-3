@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { Badge, Button, Card, CardContent } from '@/shared/ui';
-import { BookDTO } from '../services/dto/book-cards.dto';
+import { BookDTO } from '../services/dto/products.dto';
 interface Props {
   className?: string;
   book: BookDTO;

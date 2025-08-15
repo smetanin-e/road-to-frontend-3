@@ -14,5 +14,12 @@ export type BookDTO = {
 export type TagDTO = {
   id: number;
   name: string;
+  slug: string;
   books: BookDTO[];
 };
+
+export interface ProductsBySlugDTO {
+  name: string;
+  type: 'tag' | 'category' | 'subcategory';
+  data: BookDTO[];
+}

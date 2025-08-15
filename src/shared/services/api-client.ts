@@ -1,9 +1,9 @@
 import * as categories from './categories';
 import * as tags from './tags';
-import * as cards from './cards';
+import * as products from './products';
 
 export const Api = {
   categories,
   tags,
-  cards,
+  products,
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Container, ProductCard } from '@/shared/components';
 import { Button } from '@/shared/ui';
-import { TagDTO } from '../services/dto/book-cards.dto';
+import { TagDTO } from '../services/dto/products.dto';
 import {
   Carousel,
   CarouselContent,
@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/ui';
+import Link from 'next/link';
 
 interface Props {
   className?: string;
@@ -25,13 +26,15 @@ export const ProductSection: React.FC<Props> = ({ data }) => {
         <div className='mb-8 flex justify-between items-end'>
           <h2 className='text-4xl'>{data.name}</h2>
 
-          <Button variant='ghost' className='group relative flex hover:bg-transparent'>
-            <span className='pr-6'>Все {data.name.toLowerCase()} </span>
-            <ArrowRight
-              size={20}
-              className='absolute right-2 transition duration-300 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0'
-            />
-          </Button>
+          <Link href={`/products/${data.slug}`}>
+            <Button variant='ghost' className='group relative flex hover:bg-transparent'>
+              <span className='pr-6'>Все {data.name.toLowerCase()} </span>
+              <ArrowRight
+                size={20}
+                className='absolute right-2 transition duration-300 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0'
+              />
+            </Button>
+          </Link>
         </div>
 
         {/* контент */}

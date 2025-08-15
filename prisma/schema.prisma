@@ -57,7 +57,7 @@ model SubCategory {
 model Tag {
     id   Int    @id @default(autoincrement())
     name String
-    slug String
+    slug String @unique
 
     books Book[]
 }
