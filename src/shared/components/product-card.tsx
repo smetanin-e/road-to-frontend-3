@@ -1,12 +1,29 @@
+'use client';
 import Image from 'next/image';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { Badge, Button, Card, CardContent } from '@/shared/components/ui';
 import { BookDTO } from '../services/dto/products.dto';
+import { useCartStore } from '../store/cart';
+import React from 'react';
 interface Props {
   className?: string;
   book: BookDTO;
 }
 export const ProductCard: React.FC<Props> = ({ book }) => {
+  const { items, getCartItems, addCartItem } = useCartStore();
+  React.useEffect(() => {
+    getCartItems();
+  }, []);
+
+  const itemInCart = items.some((item) => item.id === book.id);
+
+  const handleAddToCart = async () => {
+    try {
+      addCartItem({ bookId: book.id });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <Card className='w-full max-w-[280px] h-full p-0  overflow-hidden group hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-0 flex flex-col h-full '>
@@ -36,7 +53,12 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
 
         <div className='p-4 space-y-3 flex flex-col flex-grow'>
           <div className='space-y-1'>
-            <h3 className='font-semibold text-lg leading-tight line-clamp-2'>{book.title}</h3>
+            <h3
+              onClick={() => alert(book.id)}
+              className='font-semibold text-lg leading-tight line-clamp-2'
+            >
+              {book.title}
+            </h3>
             <p className='text-sm text-muted-foreground'>{book.author.name}</p>
           </div>
 
@@ -48,11 +70,17 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
               </span>
             )}
           </div>
-
-          <Button className='w-full ' size='lg'>
-            <ShoppingCart className='mr-2 h-4 w-4' />
-            Добавить в корзину
-          </Button>
+          {itemInCart ? (
+            <Button variant={'destructive'} className='w-full ' size='lg'>
+              <ShoppingCart className='mr-2 h-4 w-4' />
+              Оформить
+            </Button>
+          ) : (
+            <Button onClick={handleAddToCart} className='w-full ' size='lg'>
+              <ShoppingCart className='mr-2 h-4 w-4' />
+              Добавить в корзину
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

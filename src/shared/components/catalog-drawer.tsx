@@ -18,7 +18,7 @@ import {
 import { BookOpenText } from 'lucide-react';
 
 import { CatalogItem } from './catalog-item';
-import { useCategoriesStore } from '@/store/categories';
+import { useCategoriesStore } from '@/shared/store/categories';
 import { useEffect } from 'react';
 
 interface Category {
@@ -41,14 +41,8 @@ interface CategoriesSheetProps {
   children: React.ReactNode;
 }
 
-export function CatalogDrawer({
-  children,
-  onCategorySelect = (categoryId, subcategoryId) => {
-    console.log('Selected:', categoryId, subcategoryId);
-  },
-}: CategoriesSheetProps) {
+export function CatalogDrawer({ children }: CategoriesSheetProps) {
   const { categories, getAllCategories } = useCategoriesStore();
-  console.log('==========================', categories);
 
   useEffect(() => {
     getAllCategories();
@@ -69,11 +63,7 @@ export function CatalogDrawer({
 
         <div className='mt-0 px-4 space-y-1 max-h-[calc(100vh-120px)] overflow-y-auto'>
           {categories.map((category) => (
-            <CatalogItem
-              key={category.id}
-              category={category}
-              onCategorySelect={onCategorySelect}
-            />
+            <CatalogItem key={category.id} category={category} />
           ))}
         </div>
 

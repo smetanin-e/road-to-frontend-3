@@ -18,7 +18,7 @@ import {
 } from '@/shared/components';
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/components/ui';
 
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/shared/store/user';
 
 interface Props {
   className?: string;

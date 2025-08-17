@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from '../instance';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/shared/store/user';
 
 export async function logout() {
   try {

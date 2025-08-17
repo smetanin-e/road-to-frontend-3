@@ -15,10 +15,9 @@ import Link from 'next/link';
 
 interface CategoryItemProps {
   category: CatalogDTO;
-  onCategorySelect: (categoryId: number, subcategoryId?: number) => void;
 }
 
-export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
+export function CatalogItem({ category }: CategoryItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,7 +28,6 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
             <Link href={`/products/${category.slug}`}>
               <Button
                 variant='ghost'
-                onClick={() => onCategorySelect(category.id)}
                 // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
                 className=' flex items-center gap-3 flex-1 text-left hover:text-blue-600 hover:bg-transparent transition-colors'
               >
@@ -71,7 +69,6 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
                           {' '}
                           <Button
                             variant='ghost'
-                            onClick={() => onCategorySelect(category.id, subcategory.id)}
                             // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
                             className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
                           >

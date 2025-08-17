@@ -1,5 +1,5 @@
 'use client';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/shared/store/user';
 import React from 'react';
 interface Props {
   children: React.ReactNode;

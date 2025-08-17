@@ -2,7 +2,7 @@
 import React from 'react';
 import { CatalogDrawer } from '@/shared/components';
 import { Button } from '@/shared/components/ui';
-import { useTagsStore } from '@/store/tags';
+import { useTagsStore } from '@/shared/store/tags';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 interface Props {
