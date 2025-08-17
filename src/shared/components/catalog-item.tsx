@@ -42,7 +42,7 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
 
           <Badge variant='secondary' className='ml-auto mr-2'>
             {/* {category.count} */}
-            10
+            {category.books?.length}
           </Badge>
 
           {category.subcategories && (
@@ -62,30 +62,32 @@ export function CatalogItem({ category, onCategorySelect }: CategoryItemProps) {
           <CollapsibleContent className='pb-2'>
             <div className='ml-7 space-y-2'>
               {category.subcategories &&
-                category.subcategories.map((subcategory) => (
-                  <div key={subcategory.id} className='flex items-center justify-between'>
-                    {' '}
-                    <SheetClose asChild>
-                      <Link href={`/products/${subcategory.slug}`}>
-                        {' '}
-                        <Button
-                          variant='ghost'
-                          onClick={() => onCategorySelect(category.id, subcategory.id)}
-                          // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
-                          className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
-                        >
-                          <div className='flex items-center gap-5'>
-                            <BookOpenCheck />
-                            <span>{subcategory.name}</span>
-                          </div>
-                        </Button>
-                      </Link>
-                    </SheetClose>
-                    <Badge variant='outline' className='text-xs'>
-                      {/* {subcategory.count} */}5
-                    </Badge>
-                  </div>
-                ))}
+                category.subcategories.map((subcategory) =>
+                  subcategory._count?.books && subcategory._count?.books > 0 ? (
+                    <div key={subcategory.id} className='flex items-center justify-between'>
+                      {' '}
+                      <SheetClose asChild>
+                        <Link href={`/products/${subcategory.slug}`}>
+                          {' '}
+                          <Button
+                            variant='ghost'
+                            onClick={() => onCategorySelect(category.id, subcategory.id)}
+                            // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
+                            className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
+                          >
+                            <div className='flex items-center gap-5'>
+                              <BookOpenCheck />
+                              <span>{subcategory.name}</span>
+                            </div>
+                          </Button>
+                        </Link>
+                      </SheetClose>
+                      <Badge variant='outline' className='text-xs'>
+                        {subcategory._count?.books || 0}
+                      </Badge>
+                    </div>
+                  ) : null,
+                )}
             </div>
           </CollapsibleContent>
         )}

@@ -48,6 +48,7 @@ export function CatalogDrawer({
   },
 }: CategoriesSheetProps) {
   const { categories, getAllCategories } = useCategoriesStore();
+  console.log('==========================', categories);
 
   useEffect(() => {
     getAllCategories();
@@ -80,7 +81,7 @@ export function CatalogDrawer({
           <p className='text-xs text-gray-500 text-center'>
             Всего категорий: {categories.length} • Всего книг:{' '}
             {categories.reduce(
-              (sum, category) => sum + (category.subcategories ? category.subcategories.length : 0),
+              (sum, category) => sum + (category.books?.length ? category.books?.length : 0),
               0,
             )}
           </p>

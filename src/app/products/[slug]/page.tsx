@@ -9,12 +9,7 @@ export default async function Products({ params }: { params: Promise<{ slug: str
   return (
     <div className='mt-8 pb-15 '>
       <Container>
-        {/* Шапка */}
-
         <h2 className='text-4xl mb-8'>{name}</h2>
-
-        {/* контент */}
-
         <ProductList slug={slug} />
       </Container>
     </div>
