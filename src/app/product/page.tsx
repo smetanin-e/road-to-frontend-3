@@ -13,13 +13,13 @@ import {
   Package,
 } from 'lucide-react';
 
-import { Button } from '@/shared/ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui';
-import { Badge } from '@/shared/ui';
-import { Separator } from '@/shared/ui';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui';
-import { Progress } from '@/shared/ui';
+import { Button } from '@/shared/components/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui';
+import { Badge } from '@/shared/components/ui';
+import { Separator } from '@/shared/components/ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui';
+import { Progress } from '@/shared/components/ui';
 
 export default function Product() {
   return (

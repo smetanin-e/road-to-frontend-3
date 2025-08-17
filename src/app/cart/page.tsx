@@ -19,14 +19,14 @@ import {
   Percent,
 } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Badge } from '@/shared/ui/badge';
-import { Separator } from '@/shared/ui/separator';
-import { Input } from '@/shared/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
-import { Label } from '@/shared/ui/label';
-import { Progress } from '@/shared/ui/progress';
+import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Badge } from '@/shared/components/ui/badge';
+import { Separator } from '@/shared/components/ui/separator';
+import { Input } from '@/shared/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
+import { Label } from '@/shared/components/ui/label';
+import { Progress } from '@/shared/components/ui/progress';
 
 interface CartItem {
   id: string;

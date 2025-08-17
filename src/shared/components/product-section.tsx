@@ -2,7 +2,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Container, ProductCard } from '@/shared/components';
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/components/ui';
 import { TagDTO } from '../services/dto/products.dto';
 import {
   Carousel,
@@ -10,7 +10,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/shared/ui';
+} from '@/shared/components/ui';
 import Link from 'next/link';
 
 interface Props {

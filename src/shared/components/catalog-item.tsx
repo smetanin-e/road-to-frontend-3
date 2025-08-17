@@ -7,7 +7,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   SheetClose,
-} from '@/shared/ui';
+} from '@/shared/components/ui';
 import { ChevronDown, ChevronRight, BookOpenCheck, LibraryBig } from 'lucide-react';
 
 import { CatalogDTO } from '../services/dto/catalog.dto';

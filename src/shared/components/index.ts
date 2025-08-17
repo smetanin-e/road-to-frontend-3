@@ -13,6 +13,7 @@ export { Providers } from './providers';
 export { CatalogDrawer } from './catalog-drawer';
 export { CatalogItem } from './catalog-item';
 export { HeaderMenu } from './header-menu';
+export { ProductList } from './product-list';
 export * from './forms';
 
 export { ProfileButton } from './prifile-button';

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui';
 import { stringToColor } from '@/shared/lib';
 interface Props {
   className?: string;

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Heart, ShoppingCart } from 'lucide-react';
-import { Badge, Button, Card, CardContent } from '@/shared/ui';
+import { Badge, Button, Card, CardContent } from '@/shared/components/ui';
 import { BookDTO } from '../services/dto/products.dto';
 interface Props {
   className?: string;

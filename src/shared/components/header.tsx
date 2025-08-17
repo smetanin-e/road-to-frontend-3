@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 import { logout } from '@/shared/services';
 import { CatalogDrawer, Container, HeaderMenu, Login, ProfileButton } from '@/shared/components';
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/ui';
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/components/ui';
 
 import { useUserStore } from '@/store/user';
 

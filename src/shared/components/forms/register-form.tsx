@@ -10,7 +10,7 @@ import { registerUser } from '@/shared/services';
 import { registerFormSchema, RegisterFormType } from '@/shared/schemas';
 
 import { FormInput } from '@/shared/components';
-import { Button, Label } from '@/shared/ui';
+import { Button, Label } from '@/shared/components/ui';
 
 interface Props {
   className?: string;

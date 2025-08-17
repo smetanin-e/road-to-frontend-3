@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/shared/ui';
+} from '@/shared/components/ui';
 import { ProductCard } from './product-card';
 
 interface Props {

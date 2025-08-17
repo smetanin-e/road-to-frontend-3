@@ -1,8 +1,8 @@
 import { prisma } from '@/shared/lib';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(req: Request, context: { params: Promise<{ slug: string }> }) {
+  const { slug } = await context.params;
 
   const url = new URL(req.url);
   const skip = Number(url.searchParams.get('skip') || 0);

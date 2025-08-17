@@ -14,7 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/shared/ui';
+} from '@/shared/components/ui';
 import { BookOpenText } from 'lucide-react';
 
 import { CatalogItem } from './catalog-item';

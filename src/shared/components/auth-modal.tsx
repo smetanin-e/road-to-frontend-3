@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
   Button,
-} from '@/shared/ui';
+} from '@/shared/components/ui';
 interface Props {
   className?: string;
   open: boolean;
