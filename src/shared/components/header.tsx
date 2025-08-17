@@ -8,7 +8,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { logout } from '@/shared/services';
-import { CatalogDrawer, Container, HeaderMenu, Login, ProfileButton } from '@/shared/components';
+import {
+  CatalogDrawer,
+  Container,
+  HeaderMenu,
+  Login,
+  ProfileButton,
+  SearchInput,
+} from '@/shared/components';
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/components/ui';
 
 import { useUserStore } from '@/store/user';
@@ -41,17 +48,7 @@ export const Header: React.FC<Props> = () => {
             </div>
           </Link>
 
-          <div className='flex-1 flex justify-center items-center max-w-[600px]'>
-            <div className='relative w-full'>
-              <Input placeholder='Поиск' className='min-w-[300px] pr-11' />
-              <Button
-                variant='ghost'
-                className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 hover:bg-transparent '
-              >
-                ✕
-              </Button>
-            </div>
-          </div>
+          <SearchInput />
           <div className='flex gap-9 items-end'>
             <Link href={'/cart'}>
               <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
