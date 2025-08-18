@@ -10,12 +10,7 @@ interface Props {
   book: BookDTO;
 }
 export const ProductCard: React.FC<Props> = ({ book }) => {
-  const { items, getCartItems, addCartItem } = useCartStore();
-  React.useEffect(() => {
-    getCartItems();
-  }, []);
-
-  const itemInCart = items.some((item) => item.id === book.id);
+  const { addCartItem } = useCartStore();
 
   const handleAddToCart = async () => {
     try {
@@ -70,17 +65,16 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
               </span>
             )}
           </div>
-          {itemInCart ? (
-            <Button variant={'destructive'} className='w-full ' size='lg'>
+
+          {/* <Button variant={'destructive'} className='w-full ' size='lg'>
               <ShoppingCart className='mr-2 h-4 w-4' />
               Оформить
-            </Button>
-          ) : (
-            <Button onClick={handleAddToCart} className='w-full ' size='lg'>
-              <ShoppingCart className='mr-2 h-4 w-4' />
-              Добавить в корзину
-            </Button>
-          )}
+            </Button> */}
+
+          <Button onClick={handleAddToCart} className='w-full ' size='lg'>
+            <ShoppingCart className='mr-2 h-4 w-4' />
+            Добавить в корзину
+          </Button>
         </div>
       </CardContent>
     </Card>

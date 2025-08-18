@@ -9,7 +9,7 @@ interface ReturnProps {
 
 export const getCartDetails = (data: CartDTO): ReturnProps => {
   const items = data.cartItems.map((item) => ({
-    id: Number(item.bookId),
+    id: Number(item.id),
     quantity: item.quantity,
     title: item.book.title,
     imageUrl: item.book.images?.[0]?.url ?? '/default-book.png',

@@ -1,11 +1,10 @@
 import { prisma, updateCartDetails } from '@/shared/lib';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PATH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = Number(params.id);
     const data = (await req.json()) as { quantity: number };
-    console.log('DATA========', data);
 
     const token = req.cookies.get('cartToken')?.value;
     if (!token) {
@@ -29,7 +28,7 @@ export async function PATH(req: NextRequest, { params }: { params: { id: string 
       data: { quantity: data.quantity },
     });
 
-    const updateUserCart = updateCartDetails(token);
+    const updateUserCart = await updateCartDetails(token);
     return NextResponse.json(updateUserCart);
   } catch (error) {
     console.log('[CART_PATCH] Server error', error);

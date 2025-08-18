@@ -17,5 +17,6 @@ export { ProductList } from './product-list';
 export { SearchInput } from './search';
 
 export * from './forms';
+export * from './cart';
 
 export { ProfileButton } from './prifile-button';
