@@ -19,6 +19,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/components/ui';
 
 import { useUserStore } from '@/shared/store/user';
+import { useCartStore } from '../store/cart';
 
 interface Props {
   className?: string;
@@ -26,6 +27,12 @@ interface Props {
 
 export const Header: React.FC<Props> = () => {
   const user = useUserStore((state) => state.user);
+
+  const { items, getCartItems } = useCartStore();
+
+  React.useEffect(() => {
+    getCartItems();
+  }, [getCartItems]);
 
   const signOut = async () => {
     await logout();
@@ -53,9 +60,12 @@ export const Header: React.FC<Props> = () => {
             <Link href={'/cart'}>
               <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
                 <div className='relative'>
-                  <Badge className='rounded-full absolute top-0 right-0 translate-x-[90%] translate-y-[-50%] transition-transform duration-300 group-hover:translate-y-[-70%]'>
-                    99+
-                  </Badge>
+                  {items.length > 0 && (
+                    <Badge className='rounded-full absolute top-0 right-0 translate-x-[90%] translate-y-[-50%] transition-transform duration-300 group-hover:translate-y-[-70%]'>
+                      {items.length}
+                    </Badge>
+                  )}
+
                   <ShoppingCart className='h-8 w-8' />
                 </div>
                 <span>Корзина</span>

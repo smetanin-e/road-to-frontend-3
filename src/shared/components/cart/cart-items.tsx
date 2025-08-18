@@ -11,6 +11,7 @@ import {
 import { Heart, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/shared/store/cart';
 import Image from 'next/image';
+import Link from 'next/link';
 interface Props {
   className?: string;
 }
@@ -51,7 +52,10 @@ export const CartItems: React.FC<Props> = () => {
 
               <div className='flex-1 space-y-2'>
                 <div>
-                  <h3 className='font-semibold'>{item.title}</h3>
+                  <Link href={`/product/${item.bookId}`}>
+                    <h3 className='font-semibold'>{item.title}</h3>
+                  </Link>
+
                   <p className='text-sm text-muted-foreground'>{item.author}</p>
                   {/* {!item.inStock && (
                     <Badge variant='destructive' className='mt-1'>

@@ -6,6 +6,7 @@ import { getCartDetails } from '../lib';
 export type CartItemState = {
   id: number;
   quantity: number;
+  bookId: number;
   title: string;
   imageUrl: string;
   author: string;

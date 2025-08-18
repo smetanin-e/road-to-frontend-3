@@ -10,15 +10,20 @@ interface Props {
   book: BookDTO;
 }
 export const ProductCard: React.FC<Props> = ({ book }) => {
-  const { addCartItem } = useCartStore();
+  const { items, addCartItem } = useCartStore();
+  const itemInCart = items.some((item) => item.bookId === book.id);
+  const [loading, setLoading] = React.useState(false);
 
   const handleAddToCart = async () => {
     try {
-      addCartItem({ bookId: book.id });
+      setLoading(true);
+      await addCartItem({ bookId: book.id });
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <Card className='w-full max-w-[280px] h-full p-0  overflow-hidden group hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-0 flex flex-col h-full '>
@@ -65,16 +70,18 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
               </span>
             )}
           </div>
-
-          {/* <Button variant={'destructive'} className='w-full ' size='lg'>
+          {itemInCart ? (
+            <Button variant={'destructive'} className='w-full ' size='lg'>
               <ShoppingCart className='mr-2 h-4 w-4' />
               Оформить
-            </Button> */}
-
-          <Button onClick={handleAddToCart} className='w-full ' size='lg'>
-            <ShoppingCart className='mr-2 h-4 w-4' />
-            Добавить в корзину
-          </Button>
+            </Button>
+          ) : (
+            <Button disabled={loading} onClick={handleAddToCart} className='w-full ' size='lg'>
+              <ShoppingCart className='mr-2 h-4 w-4' />
+              Добавить в корзину
+            </Button>
+          )}
+          {/*  */}
         </div>
       </CardContent>
     </Card>
