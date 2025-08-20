@@ -6,29 +6,60 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Separator,
 } from '@/shared/components/ui/';
-import { Heart, Minus, Plus, Trash2 } from 'lucide-react';
+import { Check, Heart, Minus, Plus, Trash2, TriangleAlert, X } from 'lucide-react';
 import { useCartStore } from '@/shared/store/cart';
 import Image from 'next/image';
 import Link from 'next/link';
+import { QuantityControls } from './quantity-controls';
 interface Props {
   className?: string;
 }
 
 export const CartItems: React.FC<Props> = () => {
-  const { loading, items, getCartItems, updateItemsQuantity } = useCartStore();
+  const [open, setOpen] = React.useState(false);
+  const { loading, items, getCartItems, updateItemsQuantity, removeCartItem, cleareCart } =
+    useCartStore();
   React.useEffect(() => {
     getCartItems();
   }, []);
+
+  const handleCleareCart = () => {
+    cleareCart();
+    setOpen(false);
+  };
   return (
     <Card>
       <CardHeader>
         <CardTitle className='flex items-center justify-between'>
           <span>Товары в корзине</span>
-          <Button variant='ghost' size='sm' className='text-muted-foreground'>
-            Очистить корзину
-          </Button>
+
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger>
+              <p className='text-muted-foreground text-sm cursor-pointer'>Очистить корзину</p>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className='flex items-center gap-3 pb-2'>
+                {' '}
+                <TriangleAlert size={50} color='orange' />
+                Все товары из корзины будут удалены!
+              </div>
+              <div className='flex gap-3 justify-center'>
+                <Button onClick={handleCleareCart} variant='outline' size='sm'>
+                  <Check />
+                  Очистить
+                </Button>
+                <Button onClick={() => setOpen(false)} variant='outline' size='sm'>
+                  <X />
+                  Отмена
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
@@ -74,49 +105,13 @@ export const CartItems: React.FC<Props> = () => {
                     )}
                   </div>
 
-                  <div className='flex items-center gap-2'>
-                    {/* Quantity Controls */}
-                    <div className='flex items-center border rounded'>
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        className='h-8 w-8 p-0'
-                        onClick={() => updateItemsQuantity(item.id, item.quantity - 1)}
-                        disabled={item.quantity === 1 || loading}
-                      >
-                        <Minus className='h-3 w-3' />
-                      </Button>
-                      <span className='px-3 py-1 text-sm font-medium min-w-[2rem] text-center'>
-                        {item.quantity}
-                      </span>
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        className='h-8 w-8 p-0'
-                        onClick={() => updateItemsQuantity(item.id, item.quantity + 1)}
-                        disabled={loading}
-                      >
-                        <Plus className='h-3 w-3' />
-                      </Button>
-                    </div>
-
-                    {/* Actions */}
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      className='text-muted-foreground hover:text-red-500'
-                      //={() => removeItem(item.id)}
-                    >
-                      <Trash2 className='h-4 w-4' />
-                    </Button>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      className='text-muted-foreground hover:text-red-500'
-                    >
-                      <Heart className='h-4 w-4' />
-                    </Button>
-                  </div>
+                  <QuantityControls
+                    id={item.id}
+                    quantity={item.quantity}
+                    updateItemsQuantity={updateItemsQuantity}
+                    removeCartItem={removeCartItem}
+                    loading={loading}
+                  />
                 </div>
               </div>
             </div>

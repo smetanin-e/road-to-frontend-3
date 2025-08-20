@@ -15,3 +15,4 @@ export * from './avatar';
 export * from './dialog';
 export * from './sheet';
 export * from './collapsible';
+export * from './popover';

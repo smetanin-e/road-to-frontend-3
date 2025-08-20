@@ -5,6 +5,7 @@ import { Badge, Button, Card, CardContent } from '@/shared/components/ui';
 import { BookDTO } from '../services/dto/products.dto';
 import { useCartStore } from '../store/cart';
 import React from 'react';
+import { Spinner } from '@/shared/components/';
 interface Props {
   className?: string;
   book: BookDTO;
@@ -14,6 +15,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
   const itemInCart = items.some((item) => item.bookId === book.id);
   const [loading, setLoading] = React.useState(false);
 
+  //!СДЕЛАТЬ ТАКУЮ ЖЕ ФУНКЦИЮ С ITEMS В КОРЗИНЕ
   const handleAddToCart = async () => {
     try {
       setLoading(true);
@@ -77,8 +79,13 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
             </Button>
           ) : (
             <Button disabled={loading} onClick={handleAddToCart} className='w-full ' size='lg'>
-              <ShoppingCart className='mr-2 h-4 w-4' />
-              Добавить в корзину
+              {loading ? (
+                <Spinner className='mr-2 h-4 w-4' />
+              ) : (
+                <div className='flex gap-2 items-center justify-center'>
+                  <ShoppingCart className='mr-2 h-4 w-4' /> <span>Добавить в корзину</span>
+                </div>
+              )}
             </Button>
           )}
           {/*  */}

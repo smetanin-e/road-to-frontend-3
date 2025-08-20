@@ -93,3 +93,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Не удалось создать корзину' }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const token = req.cookies.get('cartToken')?.value;
+    if (!token) {
+      return NextResponse.json('Cart token not found');
+    }
+
+    const cart = await prisma.cart.findFirst({
+      where: { token },
+    });
+
+    if (!cart) {
+      return NextResponse.json('Cart not found');
+    }
+
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+    const updateCart = updateCartDetails(token);
+    return NextResponse.json(updateCart);
+  } catch (error) {
+    console.error('[CART_DELETE] Server error', error);
+    return NextResponse.json({ message: 'Ошибка при очистке корзины' }, { status: 500 });
+  }
+}

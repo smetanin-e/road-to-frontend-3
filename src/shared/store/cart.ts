@@ -33,6 +33,8 @@ interface CartState {
 
   /* Запрос на удаление товара из корзины */
   removeCartItem: (id: number) => Promise<void>;
+
+  cleareCart: () => Promise<void>;
 }
 
 export const useCartStore = create<CartState>()((set) => ({
@@ -80,5 +82,28 @@ export const useCartStore = create<CartState>()((set) => ({
       set({ loading: false });
     }
   },
-  removeCartItem: async () => {},
+  removeCartItem: async (id: number) => {
+    try {
+      set({ loading: true, error: false });
+      const data = await Api.cart.removeCartItem(id);
+      set(getCartDetails(data));
+    } catch (e) {
+      console.error(e);
+      set({ error: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
+  cleareCart: async () => {
+    try {
+      set({ loading: true, error: false });
+      await Api.cart.clearCart();
+      set({ items: [] });
+    } catch (e) {
+      console.error(e);
+      set({ error: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));
