@@ -27,7 +27,7 @@ import { CartItems, DeliveryOptions } from '@/shared/components';
 import Link from 'next/link';
 import { useCartStore } from '@/shared/store/cart';
 import React from 'react';
-import { beforeSalePrice } from '@/shared/lib';
+import { beforeDiscountPrice } from '@/shared/lib';
 import { useDeliveryPrice } from '@/shared/hooks';
 import { useDeliverytore } from '@/shared/store/delivery-method';
 
@@ -52,16 +52,16 @@ export default function Cart() {
 
   const [promoCode, setPromoCode] = useState('');
 
-  const totalBeforeSale = items.reduce(
+  const totalPriceWithoutDiscount = items.reduce(
     (sum, item) =>
       sum +
       (item.sale
-        ? beforeSalePrice(item.price, item.sale) * item.quantity
+        ? beforeDiscountPrice(item.price, item.sale) * item.quantity
         : item.price * item.quantity),
     0,
   );
 
-  const savings = totalBeforeSale - totalAmount;
+  const savings = totalPriceWithoutDiscount - totalAmount;
 
   const freeDeliveryThreshold = 2000;
   const progressToFreeDelivery = Math.min((totalAmount / freeDeliveryThreshold) * 100, 100);

@@ -5,4 +5,4 @@ export * from './auth';
 export { findOrCreateCart } from './find-or-create-cart';
 export { updateCartDetails } from './update-cart-details';
 export { getCartDetails } from './get-cart-details';
-export { beforeSalePrice } from './before-sale-price';
+export { beforeDiscountPrice } from './before-discount-price';

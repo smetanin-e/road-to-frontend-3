@@ -20,8 +20,23 @@ import { Separator } from '@/shared/components/ui';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui';
 import { Progress } from '@/shared/components/ui';
+import { prisma } from '@/shared/lib';
+import { BookImagesContainer } from '@/shared/components';
 
-export default function Product() {
+export default async function Product({ params }: { params: Promise<{ id: number }> }) {
+  const productId = (await params).id;
+
+  const book = await prisma.book.findFirst({
+    where: {
+      id: Number(productId),
+    },
+    include: {
+      author: true,
+      images: true,
+    },
+  });
+
+  console.log(book);
   return (
     <div className='min-h-screen bg-background'>
       {/* Breadcrumbs */}
@@ -49,35 +64,7 @@ export default function Product() {
         {/* Main Product Section */}
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12'>
           {/* Left - Images */}
-          <div className='lg:col-span-4'>
-            <div className='sticky top-8'>
-              <div className='relative mb-4'>
-                <Image
-                  src='https://cv8.litres.ru/pub/c/elektronnaya-kniga/cover_415/4989181-mihail-krechmar-mohnatyy-bog.webp'
-                  alt='Мастер и Маргарита'
-                  width={400}
-                  height={600}
-                  className='w-full rounded-lg shadow-lg'
-                />
-                <Badge className='absolute top-4 left-4 bg-red-500 text-white'>-25%</Badge>
-              </div>
-
-              {/* Thumbnail Gallery */}
-              <div className='flex gap-2 overflow-x-auto'>
-                {[1, 2, 3, 4].map((i) => (
-                  <Image
-                    key={i}
-                    src={`https://cv8.litres.ru/pub/c/elektronnaya-kniga/cover_415/4989181-mihail-krechmar-mohnatyy-bog.webp`}
-                    alt={`Изображение ${i}`}
-                    width={60}
-                    height={80}
-                    className='flex-shrink-0 rounded border-2 border-transparent hover:border-primary cursor-pointer transition-colors'
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
+          <BookImagesContainer images={book?.images} />
           {/* Center - Description and Details */}
           <div className='lg:col-span-5'>
             <div className='space-y-6'>

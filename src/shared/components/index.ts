@@ -21,5 +21,6 @@ export { DeliveryOptions } from './delivery-options';
 
 export * from './forms';
 export * from './cart';
+export * from './book';
 
 export { ProfileButton } from './prifile-button';

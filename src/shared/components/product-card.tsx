@@ -6,7 +6,7 @@ import { BookDTO } from '../services/dto/products.dto';
 import { useCartStore } from '../store/cart';
 import React from 'react';
 import { Spinner } from '@/shared/components/';
-import { beforeSalePrice } from '@/shared/lib';
+import { beforeDiscountPrice } from '@/shared/lib';
 interface Props {
   className?: string;
   book: BookDTO;
@@ -68,7 +68,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
             <span className='text-2xl font-bold text-primary'>{book.price} ₽</span>
             {book.sale && (
               <span className='text-sm text-muted-foreground line-through'>
-                {beforeSalePrice(book.price, book.sale)} ₽
+                {beforeDiscountPrice(book.price, book.sale)} ₽
               </span>
             )}
           </div>
