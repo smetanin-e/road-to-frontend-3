@@ -1,24 +1,37 @@
+'use client';
 import React from 'react';
 
 import { Heart, Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/shared/components/ui';
+import { useCartStore } from '@/shared/store/cart';
+import { Spinner } from '../spinner';
 
 interface Props {
   className?: string;
-  loading: boolean;
   id: number;
   quantity: number;
-  updateItemsQuantity: (id: number, quantity: number) => Promise<void>;
-  removeCartItem: (id: number) => Promise<void>;
+  removeItem: (id: number) => Promise<void>;
 }
 
-export const QuantityControls: React.FC<Props> = ({
-  loading,
-  id,
-  quantity,
-  updateItemsQuantity,
-  removeCartItem,
-}) => {
+export const QuantityControls: React.FC<Props> = ({ id, quantity, removeItem }) => {
+  const { updateItemsQuantity, removeCartItem } = useCartStore();
+  const [loading, setLoading] = React.useState(false); //локальный state для отображения загрузки при обновлении количества товара
+
+  const changeItemsQuantity = async (
+    type: 'increment' | 'decrement',
+    id: number,
+    quantity: number,
+  ) => {
+    try {
+      setLoading(true);
+      const newQuantity = type === 'increment' ? quantity + 1 : quantity - 1;
+      await updateItemsQuantity(id, newQuantity);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className='flex items-center gap-2'>
       {/* Quantity Controls */}
@@ -27,17 +40,19 @@ export const QuantityControls: React.FC<Props> = ({
           variant='ghost'
           size='sm'
           className='h-8 w-8 p-0'
-          onClick={() => updateItemsQuantity(id, quantity - 1)}
+          onClick={() => changeItemsQuantity('decrement', id, quantity)}
           disabled={quantity === 1 || loading}
         >
           <Minus className='h-3 w-3' />
         </Button>
-        <span className='px-3 py-1 text-sm font-medium min-w-[2rem] text-center'>{quantity}</span>
+        <span className='text-sm font-medium min-w-[2rem] flex justify-center'>
+          {!loading ? quantity : <Spinner className='h-4 w-4' />}
+        </span>
         <Button
           variant='ghost'
           size='sm'
           className='h-8 w-8 p-0'
-          onClick={() => updateItemsQuantity(id, quantity + 1)}
+          onClick={() => changeItemsQuantity('increment', id, quantity)}
           disabled={loading}
         >
           <Plus className='h-3 w-3' />
@@ -49,7 +64,7 @@ export const QuantityControls: React.FC<Props> = ({
         variant='ghost'
         size='sm'
         className='text-muted-foreground hover:text-red-500'
-        onClick={() => removeCartItem(id)}
+        onClick={() => removeItem(id)}
       >
         <Trash2 className='h-4 w-4' />
       </Button>

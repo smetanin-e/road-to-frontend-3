@@ -15,7 +15,8 @@ export { CatalogItem } from './catalog-item';
 export { HeaderMenu } from './header-menu';
 export { ProductList } from './product-list';
 export { SearchInput } from './search';
-export { Spinner } from './spiner';
+export { Spinner } from './spinner';
+export { LoadingBounce } from './loading-bounce';
 
 export * from './forms';
 export * from './cart';
