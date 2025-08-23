@@ -17,6 +17,7 @@ export { ProductList } from './product-list';
 export { SearchInput } from './search';
 export { Spinner } from './spinner';
 export { LoadingBounce } from './loading-bounce';
+export { DeliveryOptions } from './delivery-options';
 
 export * from './forms';
 export * from './cart';

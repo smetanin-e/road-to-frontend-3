@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CartItemState, useCartStore } from '@/shared/store/cart';
 import { QuantityControls } from './quantity-controls';
 
-import { cn } from '@/shared/lib';
+import { beforeSalePrice, cn } from '@/shared/lib';
 import { LoadingBounce } from '@/shared/components';
 
 interface Props {
@@ -26,7 +26,7 @@ export const CartItem: React.FC<Props> = ({ item }) => {
     }
   };
   return (
-    <div key={item.id} className='relative'>
+    <div className='relative'>
       {loading && <LoadingBounce />}
       <div className={cn('flex gap-4', loading && 'opacity-30')}>
         <div className='relative'>
@@ -63,7 +63,7 @@ export const CartItem: React.FC<Props> = ({ item }) => {
               <span className='font-bold text-lg'>{item.price} ₽</span>
               {item.sale && (
                 <span className='text-sm text-muted-foreground line-through'>
-                  {Math.ceil(item.price / (1 - item.sale / 100))} ₽
+                  {beforeSalePrice(item.price, item.sale)} ₽
                 </span>
               )}
             </div>

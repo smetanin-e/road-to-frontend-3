@@ -23,7 +23,13 @@ import { Input } from '@/shared/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Label } from '@/shared/components/ui/label';
 import { Progress } from '@/shared/components/ui/progress';
-import { CartItems } from '@/shared/components';
+import { CartItems, DeliveryOptions } from '@/shared/components';
+import Link from 'next/link';
+import { useCartStore } from '@/shared/store/cart';
+import React from 'react';
+import { beforeSalePrice } from '@/shared/lib';
+import { useDeliveryPrice } from '@/shared/hooks';
+import { useDeliverytore } from '@/shared/store/delivery-method';
 
 interface CartItem {
   id: string;
@@ -37,73 +43,41 @@ interface CartItem {
 }
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: '1',
-      title: 'Мастер и Маргарита',
-      author: 'Михаил Булгаков',
-      price: 750,
-      originalPrice: 1000,
-      quantity: 1,
-      image: '/placeholder.svg?height=120&width=80',
-      inStock: true,
-    },
-    {
-      id: '2',
-      title: 'Белая гвардия',
-      author: 'Михаил Булгаков',
-      price: 650,
-      originalPrice: 800,
-      quantity: 2,
-      image: '/placeholder.svg?height=120&width=80',
-      inStock: true,
-    },
-    {
-      id: '3',
-      title: 'Собачье сердце',
-      author: 'Михаил Булгаков',
-      price: 550,
-      originalPrice: 550,
-      quantity: 1,
-      image: '/placeholder.svg?height=120&width=80',
-      inStock: false,
-    },
-  ]);
+  const { items, totalQuantity, totalAmount, getCartItems } = useCartStore();
+  const { deliveryMethod } = useDeliverytore();
+
+  React.useEffect(() => {
+    getCartItems();
+  }, [getCartItems]);
 
   const [promoCode, setPromoCode] = useState('');
-  const [deliveryMethod, setDeliveryMethod] = useState('standard');
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems((items) =>
-      items.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)),
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const originalTotal = cartItems.reduce(
-    (sum, item) => sum + item.originalPrice * item.quantity,
+  const totalBeforeSale = items.reduce(
+    (sum, item) =>
+      sum +
+      (item.sale
+        ? beforeSalePrice(item.price, item.sale) * item.quantity
+        : item.price * item.quantity),
     0,
   );
-  const savings = originalTotal - subtotal;
-  const deliveryPrice = deliveryMethod === 'express' ? 500 : deliveryMethod === 'pickup' ? 0 : 200;
-  const freeDeliveryThreshold = 2000;
-  const progressToFreeDelivery = Math.min((subtotal / freeDeliveryThreshold) * 100, 100);
-  const total = subtotal + deliveryPrice;
 
+  const savings = totalBeforeSale - totalAmount;
+
+  const freeDeliveryThreshold = 2000;
+  const progressToFreeDelivery = Math.min((totalAmount / freeDeliveryThreshold) * 100, 100);
+  //const total = totalAmount + deliveryPrice;
+
+  const deliveryPrice = useDeliveryPrice(totalAmount, freeDeliveryThreshold, deliveryMethod);
+  const total = totalAmount + deliveryPrice;
   return (
     <div className='min-h-screen bg-background'>
       {/* Breadcrumbs */}
       <div className='border-b'>
         <div className='container mx-auto px-4 py-3'>
           <nav className='flex items-center space-x-2 text-sm text-muted-foreground'>
-            <a href='/' className='hover:text-foreground transition-colors'>
+            <Link href='/' className='hover:text-foreground transition-colors'>
               Главная
-            </a>
+            </Link>
             <ChevronRight className='h-4 w-4' />
             <span className='text-foreground'>Корзина</span>
           </nav>
@@ -113,13 +87,15 @@ export default function Cart() {
       <div className='container mx-auto px-4 py-8'>
         <div className='flex items-center justify-between mb-8'>
           <h1 className='text-3xl font-bold'>Корзина</h1>
-          <Badge variant='secondary' className='text-lg px-3 py-1'>
-            {cartItems.length}{' '}
-            {cartItems.length === 1 ? 'товар' : cartItems.length < 5 ? 'товара' : 'товаров'}
-          </Badge>
+          {items.length > 0 && (
+            <Badge variant='secondary' className='text-lg px-3 py-1'>
+              {totalQuantity}{' '}
+              {totalQuantity === 1 ? 'товар' : totalQuantity < 5 ? 'товара' : 'товаров'}
+            </Badge>
+          )}
         </div>
 
-        {cartItems.length === 0 ? (
+        {items.length === 0 ? (
           <Card className='text-center py-12'>
             <CardContent>
               <ShoppingCart className='h-16 w-16 mx-auto text-muted-foreground mb-4' />
@@ -128,7 +104,7 @@ export default function Cart() {
                 Добавьте товары, чтобы продолжить покупки
               </p>
               <Button asChild>
-                <a href='/books'>Перейти к покупкам</a>
+                <Link href='/'>Перейти к покупкам</Link>
               </Button>
             </CardContent>
           </Card>
@@ -137,13 +113,13 @@ export default function Cart() {
             {/* Left - Cart Items */}
             <div className='lg:col-span-2 space-y-6'>
               {/* Progress to Free Delivery */}
-              {subtotal < freeDeliveryThreshold && (
+              {totalAmount < freeDeliveryThreshold && (
                 <Card>
                   <CardContent className='p-4'>
                     <div className='flex items-center gap-2 mb-2'>
                       <Truck className='h-4 w-4 text-green-600' />
                       <span className='text-sm font-medium'>
-                        До бесплатной доставки осталось {freeDeliveryThreshold - subtotal} ₽
+                        До бесплатной доставки осталось {freeDeliveryThreshold - totalAmount} ₽
                       </span>
                     </div>
                     <Progress value={progressToFreeDelivery} className='h-2' />
@@ -234,58 +210,7 @@ export default function Cart() {
             <div className='space-y-6'>
               <div className='sticky top-8 space-y-6'>
                 {/* Delivery Options */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className='flex items-center gap-2'>
-                      <Truck className='h-5 w-5' />
-                      Способ доставки
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <RadioGroup value={deliveryMethod} onValueChange={setDeliveryMethod}>
-                      <div className='space-y-3'>
-                        <div className='flex items-center space-x-2 p-3 border rounded-lg'>
-                          <RadioGroupItem value='standard' id='standard' />
-                          <Label htmlFor='standard' className='flex-1 cursor-pointer'>
-                            <div className='flex justify-between items-center'>
-                              <div>
-                                <p className='font-medium'>Стандартная доставка</p>
-                                <p className='text-sm text-muted-foreground'>3-5 рабочих дней</p>
-                              </div>
-                              <span className='font-medium'>200 ₽</span>
-                            </div>
-                          </Label>
-                        </div>
-
-                        <div className='flex items-center space-x-2 p-3 border rounded-lg'>
-                          <RadioGroupItem value='express' id='express' />
-                          <Label htmlFor='express' className='flex-1 cursor-pointer'>
-                            <div className='flex justify-between items-center'>
-                              <div>
-                                <p className='font-medium'>Экспресс доставка</p>
-                                <p className='text-sm text-muted-foreground'>1-2 рабочих дня</p>
-                              </div>
-                              <span className='font-medium'>500 ₽</span>
-                            </div>
-                          </Label>
-                        </div>
-
-                        <div className='flex items-center space-x-2 p-3 border rounded-lg'>
-                          <RadioGroupItem value='pickup' id='pickup' />
-                          <Label htmlFor='pickup' className='flex-1 cursor-pointer'>
-                            <div className='flex justify-between items-center'>
-                              <div>
-                                <p className='font-medium'>Самовывоз</p>
-                                <p className='text-sm text-muted-foreground'>Готов сегодня</p>
-                              </div>
-                              <span className='font-medium text-green-600'>Бесплатно</span>
-                            </div>
-                          </Label>
-                        </div>
-                      </div>
-                    </RadioGroup>
-                  </CardContent>
-                </Card>
+                <DeliveryOptions totalAmount={totalAmount} />
 
                 {/* Order Summary */}
                 <Card>
@@ -295,10 +220,8 @@ export default function Cart() {
                   <CardContent className='space-y-4'>
                     <div className='space-y-2'>
                       <div className='flex justify-between'>
-                        <span>
-                          Товары ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} шт.)
-                        </span>
-                        <span>{subtotal} ₽</span>
+                        <span>Товары ({totalQuantity} шт.)</span>
+                        <span>{totalAmount} ₽</span>
                       </div>
                       {savings > 0 && (
                         <div className='flex justify-between text-green-600'>
@@ -308,7 +231,11 @@ export default function Cart() {
                       )}
                       <div className='flex justify-between'>
                         <span>Доставка</span>
-                        <span>{deliveryPrice === 0 ? 'Бесплатно' : `${deliveryPrice} ₽`}</span>
+                        {deliveryPrice === 0 ? (
+                          <span className='font-medium text-green-600'>Бесплатно</span>
+                        ) : (
+                          <span>{deliveryPrice} ₽</span>
+                        )}
                       </div>
                     </div>
 

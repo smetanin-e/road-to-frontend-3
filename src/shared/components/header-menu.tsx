@@ -5,6 +5,7 @@ import { Button } from '@/shared/components/ui';
 import { useTagsStore } from '@/shared/store/tags';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
+import { useDeliverytore } from '../store/delivery-method';
 interface Props {
   className?: string;
 }

@@ -65,10 +65,10 @@ export const CartItems: React.FC<Props> = () => {
 
       <CardContent className='space-y-4'>
         {items.map((item, index) => (
-          <>
-            <CartItem key={item.id} item={item} />
+          <div key={item.id}>
+            <CartItem item={item} />
             {index < items.length - 1 && <Separator className='mt-4' />}
-          </>
+          </div>
         ))}
       </CardContent>
     </Card>

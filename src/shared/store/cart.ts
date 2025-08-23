@@ -97,8 +97,8 @@ export const useCartStore = create<CartState>()((set) => ({
   cleareCart: async () => {
     try {
       set({ loading: true, error: false });
-      await Api.cart.clearCart();
-      set({ items: [] });
+      const data = await Api.cart.clearCart();
+      set(getCartDetails(data));
     } catch (e) {
       console.error(e);
       set({ error: true });

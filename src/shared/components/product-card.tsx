@@ -6,6 +6,7 @@ import { BookDTO } from '../services/dto/products.dto';
 import { useCartStore } from '../store/cart';
 import React from 'react';
 import { Spinner } from '@/shared/components/';
+import { beforeSalePrice } from '@/shared/lib';
 interface Props {
   className?: string;
   book: BookDTO;
@@ -15,7 +16,6 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
   const itemInCart = items.some((item) => item.bookId === book.id);
   const [loading, setLoading] = React.useState(false);
 
-  //!СДЕЛАТЬ ТАКУЮ ЖЕ ФУНКЦИЮ С ITEMS В КОРЗИНЕ
   const handleAddToCart = async () => {
     try {
       setLoading(true);
@@ -68,7 +68,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
             <span className='text-2xl font-bold text-primary'>{book.price} ₽</span>
             {book.sale && (
               <span className='text-sm text-muted-foreground line-through'>
-                {Math.ceil(book.price / (1 - book.sale / 100))} ₽
+                {beforeSalePrice(book.price, book.sale)} ₽
               </span>
             )}
           </div>

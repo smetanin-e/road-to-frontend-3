@@ -34,6 +34,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select';
+import { DeliveryOptions } from '@/shared/components';
+import { useCartStore } from '@/shared/store/cart';
+import { useDeliverytore } from '@/shared/store/delivery-method';
 
 interface OrderItem {
   id: string;
@@ -45,6 +48,8 @@ interface OrderItem {
 }
 
 export default function Checkout() {
+  const { deliveryMethod } = useDeliverytore();
+  const { totalAmount } = useCartStore();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -55,7 +60,7 @@ export default function Checkout() {
     address: '',
     apartment: '',
     postalCode: '',
-    deliveryMethod: 'standard',
+    deliveryMethod: deliveryMethod,
     deliveryTime: '',
     paymentMethod: 'card',
     comment: '',
@@ -304,7 +309,8 @@ export default function Checkout() {
             </Card>
 
             {/* Delivery Method */}
-            <Card>
+            <DeliveryOptions totalAmount={totalAmount} />
+            {/* <Card>
               <CardHeader>
                 <CardTitle className='flex items-center gap-2'>
                   <Truck className='h-5 w-5' />
@@ -380,7 +386,7 @@ export default function Checkout() {
                   </div>
                 )}
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Payment Method */}
             <Card>

@@ -4,7 +4,7 @@ import React from 'react';
 import { Heart, Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/shared/components/ui';
 import { useCartStore } from '@/shared/store/cart';
-import { Spinner } from '../spinner';
+import { Spinner } from '@/shared/components';
 
 interface Props {
   className?: string;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const QuantityControls: React.FC<Props> = ({ id, quantity, removeItem }) => {
-  const { updateItemsQuantity, removeCartItem } = useCartStore();
+  const { updateItemsQuantity } = useCartStore();
   const [loading, setLoading] = React.useState(false); //локальный state для отображения загрузки при обновлении количества товара
 
   const changeItemsQuantity = async (
