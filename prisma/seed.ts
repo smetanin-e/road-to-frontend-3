@@ -130,16 +130,28 @@ async function generateData() {
   //   });
   //*************************************************************** */
   const authors = [
-    { name: 'Джордж Оруэлл', description: 'Английский писатель и журналист.' },
-    { name: 'Фёдор Достоевский', description: 'Русский писатель, философ.' },
-    { name: 'Лев Толстой', description: 'Автор эпических романов.' },
-    { name: 'Рэй Брэдбери', description: 'Американский фантаст.' },
-    { name: 'Агата Кристи', description: 'Королева детектива.' },
-    { name: 'Дэн Браун', description: 'Автор триллеров и детективов.' },
-    { name: 'Дж. Р. Р. Толкин', description: 'Создатель Средиземья.' },
-    { name: 'Айзек Азимов', description: 'Писатель-фантаст и учёный.' },
-    { name: 'Стивен Кинг', description: 'Мастер ужасов.' },
-    { name: 'Михаил Булгаков', description: 'Русский писатель и драматург.' },
+    {
+      name: 'Джордж Оруэлл',
+      description: 'Английский писатель и журналист.',
+      yearsOfLife: '1903–1950',
+    },
+    {
+      name: 'Фёдор Достоевский',
+      description: 'Русский писатель, философ.',
+      yearsOfLife: '1821–1881',
+    },
+    { name: 'Лев Толстой', description: 'Автор эпических романов.', yearsOfLife: '1828–1910' },
+    { name: 'Рэй Брэдбери', description: 'Американский фантаст.', yearsOfLife: '1920–2012' },
+    { name: 'Агата Кристи', description: 'Королева детектива.', yearsOfLife: '1890–1976' },
+    { name: 'Дэн Браун', description: 'Автор триллеров и детективов.', yearsOfLife: '1964–' },
+    { name: 'Дж. Р. Р. Толкин', description: 'Создатель Средиземья.', yearsOfLife: '1892–1973' },
+    { name: 'Айзек Азимов', description: 'Писатель-фантаст и учёный.', yearsOfLife: '1920–1992' },
+    { name: 'Стивен Кинг', description: 'Мастер ужасов.', yearsOfLife: '1947–' },
+    {
+      name: 'Михаил Булгаков',
+      description: 'Русский писатель и драматург.',
+      yearsOfLife: '1891–1940',
+    },
   ];
 
   const bookTitles = [
@@ -181,15 +193,21 @@ async function generateData() {
       data: {
         name: authors[i].name,
         description: authors[i].description,
+        yearsOfLife: authors[i].yearsOfLife,
         books: {
           create: booksForAuthor.map((title) => ({
             title,
-            description: `Описание книги "${title}".`,
+            description: [
+              `Описание книги "${title}".`,
+              `Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate optio ad quam consectetur numquam tempora, doloremque eius dolorum iure doloribus!`,
+            ],
             price: randomInt(200, 1000),
             sale: Math.random() > 0.5 ? randomInt(5, 30) : null,
             categoryId: randomInt(1, 5),
             subcategoryId: randomInt(1, 18),
-            tags: { connect: randomFromArray([{ id: 1 }, { id: 2 }, { id: 3 }], randomInt(1, 3)) },
+            tags: {
+              connect: randomFromArray([{ id: 1 }, { id: 2 }, { id: 3 }], randomInt(1, 3)),
+            },
             images: {
               create: [
                 {
@@ -204,6 +222,18 @@ async function generateData() {
                   url: `https://picsum.photos/seed/${encodeURIComponent(title)}-3/400/600`,
                   order: 2,
                 },
+              ],
+            },
+            specs: {
+              create: [
+                { name: 'Издательство', value: 'АСТ' },
+                { name: 'Серия', value: 'Классическая проза' },
+                { name: 'Год издания', value: String(randomInt(1950, 2023)) },
+                { name: 'Количество страниц', value: String(randomInt(200, 900)) },
+                { name: 'Переплет', value: 'Твердый' },
+                { name: 'Формат', value: '84x108/32' },
+                { name: 'ISBN', value: `978-5-${randomInt(1000000, 9999999)}` },
+                { name: 'Вес', value: `${randomInt(200, 800)} г` },
               ],
             },
           })),
@@ -222,6 +252,7 @@ async function clearData() {
   await prisma.$executeRaw`TRUNCATE TABLE "Book" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "Author" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "BookImage" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "BookSpec" RESTART IDENTITY CASCADE`;
 
   await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "CartItem" RESTART IDENTITY CASCADE`;

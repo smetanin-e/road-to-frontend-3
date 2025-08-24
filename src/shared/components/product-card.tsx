@@ -7,6 +7,7 @@ import { useCartStore } from '../store/cart';
 import React from 'react';
 import { Spinner } from '@/shared/components/';
 import { beforeDiscountPrice } from '@/shared/lib';
+import Link from 'next/link';
 interface Props {
   className?: string;
   book: BookDTO;
@@ -32,7 +33,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
         <div className='relative'>
           <Image
             src={book.images[0].url}
-            alt='Мастер и Маргарита'
+            alt={book.title}
             width={200}
             height={320}
             className='w-full h-80 object-cover'
@@ -73,10 +74,13 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
             )}
           </div>
           {itemInCart ? (
-            <Button variant={'destructive'} className='w-full ' size='lg'>
-              <ShoppingCart className='mr-2 h-4 w-4' />
-              Оформить
-            </Button>
+            <Link href='/cart'>
+              {' '}
+              <Button variant={'destructive'} className='w-full ' size='lg'>
+                <ShoppingCart className='mr-2 h-4 w-4' />
+                Оформить
+              </Button>
+            </Link>
           ) : (
             <Button disabled={loading} onClick={handleAddToCart} className='w-full ' size='lg'>
               {loading ? (

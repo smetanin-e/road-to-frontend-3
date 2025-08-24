@@ -8,9 +8,7 @@ import {
   Shield,
   RotateCcw,
   ChevronRight,
-  Calendar,
   BookOpen,
-  Package,
 } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui';
@@ -18,10 +16,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui
 import { Badge } from '@/shared/components/ui';
 import { Separator } from '@/shared/components/ui';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui';
+import { Avatar, AvatarFallback } from '@/shared/components/ui';
 import { Progress } from '@/shared/components/ui';
 import { prisma } from '@/shared/lib';
-import { BookImagesContainer } from '@/shared/components';
+import {
+  AuthorInfo,
+  BookActions,
+  BookBreadcrumbs,
+  BookImagesContainer,
+  QuickInfo,
+  Specs,
+} from '@/shared/components';
+import Link from 'next/link';
 
 export default async function Product({ params }: { params: Promise<{ id: number }> }) {
   const productId = (await params).id;
@@ -33,44 +39,33 @@ export default async function Product({ params }: { params: Promise<{ id: number
     include: {
       author: true,
       images: true,
+      specs: true,
     },
   });
 
-  console.log(book);
+  if (!book) {
+    return null;
+  }
+
   return (
     <div className='min-h-screen bg-background'>
       {/* Breadcrumbs */}
-      <div className='border-b'>
-        <div className='container mx-auto px-4 py-3'>
-          <nav className='flex items-center space-x-2 text-sm text-muted-foreground'>
-            <a href='/' className='hover:text-foreground transition-colors'>
-              Главная
-            </a>
-            <ChevronRight className='h-4 w-4' />
-            <a href='/books' className='hover:text-foreground transition-colors'>
-              Книги
-            </a>
-            <ChevronRight className='h-4 w-4' />
-            <a href='/books/fiction' className='hover:text-foreground transition-colors'>
-              Художественная литература
-            </a>
-            <ChevronRight className='h-4 w-4' />
-            <span className='text-foreground'>Мастер и Маргарита</span>
-          </nav>
-        </div>
-      </div>
+
+      <BookBreadcrumbs categoryId={book.categoryId} subcategoryId={book.subcategoryId} />
 
       <div className='container mx-auto px-4 py-8'>
         {/* Main Product Section */}
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12'>
           {/* Left - Images */}
+          {/*//!СДЕЛАТЬ ПУСТУЮ КАРТИНКУ, ЕСЛИ НЕ БУДЕТ ИЗОБРАЖЕНИЙ  */}
           <BookImagesContainer images={book?.images} />
+
           {/* Center - Description and Details */}
           <div className='lg:col-span-5'>
             <div className='space-y-6'>
               <div>
-                <h1 className='text-3xl font-bold mb-2'>Мастер и Маргарита</h1>
-                <p className='text-xl text-muted-foreground mb-4'>Михаил Булгаков</p>
+                <h1 className='text-3xl font-bold mb-2'>{book?.title}</h1>
+                <p className='text-xl text-muted-foreground mb-4'>{book?.author.name}</p>
 
                 {/* Rating */}
                 <div className='flex items-center gap-2 mb-4'>
@@ -88,20 +83,7 @@ export default async function Product({ params }: { params: Promise<{ id: number
                 </div>
 
                 {/* Quick Info */}
-                <div className='flex flex-wrap gap-4 text-sm text-muted-foreground mb-6'>
-                  <div className='flex items-center gap-1'>
-                    <Calendar className='h-4 w-4' />
-                    <span>2023 год</span>
-                  </div>
-                  <div className='flex items-center gap-1'>
-                    <BookOpen className='h-4 w-4' />
-                    <span>480 страниц</span>
-                  </div>
-                  <div className='flex items-center gap-1'>
-                    <Package className='h-4 w-4' />
-                    <span>Твердый переплет</span>
-                  </div>
-                </div>
+                <QuickInfo specs={book?.specs} />
               </div>
 
               {/* Tabs */}
@@ -113,18 +95,13 @@ export default async function Product({ params }: { params: Promise<{ id: number
                 </TabsList>
 
                 <TabsContent value='description' className='space-y-4'>
-                  <p className='text-muted-foreground leading-relaxed'>
-                    «Мастер и Маргарита» — роман Михаила Афанасьевича Булгакова, работа над которым
-                    началась в конце 1920-х годов и продолжалась вплоть до смерти писателя. Роман
-                    относится к незавершённым произведениям; редактирование и сведение воедино
-                    черновых записей осуществляла после смерти писателя его вдова — Елена Сергеевна
-                    Булгакова.
-                  </p>
-                  <p className='text-muted-foreground leading-relaxed'>
-                    Роман сочетает в себе элементы сатиры на советскую действительность, философскую
-                    притчу, фантастику и любовную историю. Произведение считается вершиной
-                    творчества Булгакова и одним из лучших романов XX века.
-                  </p>
+                  {book?.description &&
+                    book.description.map((paragraph, idx) => (
+                      <p key={idx} className='text-muted-foreground leading-relaxed'>
+                        {paragraph}
+                      </p>
+                    ))}
+
                   <Button variant='outline' className='mt-4 bg-transparent'>
                     <BookOpen className='mr-2 h-4 w-4' />
                     Читать отрывок
@@ -132,130 +109,18 @@ export default async function Product({ params }: { params: Promise<{ id: number
                 </TabsContent>
 
                 <TabsContent value='specs' className='space-y-4'>
-                  <div className='grid grid-cols-2 gap-4 text-sm'>
-                    <div>
-                      <span className='font-medium'>Издательство:</span>
-                      <p className='text-muted-foreground'>АСТ</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Серия:</span>
-                      <p className='text-muted-foreground'>Классическая проза</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Год издания:</span>
-                      <p className='text-muted-foreground'>2023</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Количество страниц:</span>
-                      <p className='text-muted-foreground'>480</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Переплет:</span>
-                      <p className='text-muted-foreground'>Твердый</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Формат:</span>
-                      <p className='text-muted-foreground'>84x108/32</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>ISBN:</span>
-                      <p className='text-muted-foreground'>978-5-17-123456-7</p>
-                    </div>
-                    <div>
-                      <span className='font-medium'>Вес:</span>
-                      <p className='text-muted-foreground'>520 г</p>
-                    </div>
-                  </div>
+                  <Specs specs={book?.specs} />
                 </TabsContent>
 
                 <TabsContent value='author' className='space-y-4'>
-                  <div className='flex items-start gap-4'>
-                    <Avatar className='h-16 w-16'>
-                      <AvatarImage src='/placeholder.svg?height=64&width=64' />
-                      <AvatarFallback>МБ</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className='font-semibold text-lg'>Михаил Афанасьевич Булгаков</h3>
-                      <p className='text-sm text-muted-foreground mb-2'>(1891-1940)</p>
-                      <p className='text-muted-foreground leading-relaxed'>
-                        Русский писатель, драматург, театральный режиссёр и актёр. Автор романов,
-                        повестей, рассказов, очерков, фельетонов, пьес, инсценировок, киносценариев,
-                        оперных либретто.
-                      </p>
-                    </div>
-                  </div>
+                  <AuthorInfo author={book.author} />
                 </TabsContent>
               </Tabs>
             </div>
           </div>
 
           {/* Right - Purchase Block */}
-          <div className='lg:col-span-3'>
-            <div className='sticky top-8'>
-              <Card>
-                <CardContent className='p-6 space-y-6'>
-                  {/* Price */}
-                  <div className='space-y-2'>
-                    <div className='flex items-center gap-2'>
-                      <span className='text-3xl font-bold text-primary'>750 ₽</span>
-                      <span className='text-lg text-muted-foreground line-through'>1000 ₽</span>
-                    </div>
-                    <Badge variant='secondary' className='text-green-600'>
-                      Экономия 250 ₽
-                    </Badge>
-                  </div>
-
-                  {/* Availability */}
-                  <div className='space-y-2'>
-                    <div className='flex items-center gap-2 text-green-600'>
-                      <div className='h-2 w-2 bg-green-600 rounded-full'></div>
-                      <span className='text-sm font-medium'>В наличии</span>
-                    </div>
-                    <p className='text-sm text-muted-foreground'>Осталось 5 экземпляров</p>
-                  </div>
-
-                  {/* Actions */}
-                  <div className='space-y-3'>
-                    <Button className='w-full' size='lg'>
-                      <ShoppingCart className='mr-2 h-4 w-4' />
-                      Добавить в корзину
-                    </Button>
-
-                    <div className='flex gap-2'>
-                      <Button variant='outline' size='sm' className='flex-1 bg-transparent'>
-                        <Heart className='mr-2 h-4 w-4' />В избранное
-                      </Button>
-                      <Button variant='outline' size='sm' className='flex-1 bg-transparent'>
-                        <Share2 className='mr-2 h-4 w-4' />
-                        Поделиться
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Delivery Info */}
-                  <div className='space-y-3'>
-                    <h4 className='font-medium'>Доставка и оплата</h4>
-                    <div className='space-y-2 text-sm'>
-                      <div className='flex items-center gap-2'>
-                        <Truck className='h-4 w-4 text-muted-foreground' />
-                        <span>Доставка от 200 ₽</span>
-                      </div>
-                      <div className='flex items-center gap-2'>
-                        <Shield className='h-4 w-4 text-muted-foreground' />
-                        <span>Гарантия качества</span>
-                      </div>
-                      <div className='flex items-center gap-2'>
-                        <RotateCcw className='h-4 w-4 text-muted-foreground' />
-                        <span>Возврат 30 дней</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <BookActions bookId={book.id} price={book?.price} sale={book.sale ? book.sale : 0} />
         </div>
 
         {/* Reviews Section */}

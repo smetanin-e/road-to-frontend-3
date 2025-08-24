@@ -6,3 +6,4 @@ export { findOrCreateCart } from './find-or-create-cart';
 export { updateCartDetails } from './update-cart-details';
 export { getCartDetails } from './get-cart-details';
 export { beforeDiscountPrice } from './before-discount-price';
+export { authorInitials } from './author-initials';
