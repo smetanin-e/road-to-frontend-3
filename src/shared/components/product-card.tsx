@@ -31,13 +31,16 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
     <Card className='w-full max-w-[280px] h-full p-0  overflow-hidden group hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-0 flex flex-col h-full '>
         <div className='relative'>
-          <Image
-            src={book.images[0].url}
-            alt={book.title}
-            width={200}
-            height={320}
-            className='w-full h-80 object-cover'
-          />
+          <Link href={`/product/${book.id}`}>
+            <Image
+              src={book.images[0].url}
+              alt={book.title}
+              width={200}
+              height={320}
+              className='w-full h-80 object-cover cursor-pointer'
+            />
+          </Link>
+
           {book.sale && (
             <Badge className='absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white'>
               {book.sale} %
@@ -56,12 +59,10 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
 
         <div className='p-4 space-y-3 flex flex-col flex-grow'>
           <div className='space-y-1'>
-            <h3
-              onClick={() => alert(book.id)}
-              className='font-semibold text-lg leading-tight line-clamp-2'
-            >
-              {book.title}
-            </h3>
+            <Link href={`/product/${book.id}`}>
+              <h3 className='font-semibold text-lg leading-tight line-clamp-2'>{book.title}</h3>
+            </Link>
+
             <p className='text-sm text-muted-foreground'>{book.author.name}</p>
           </div>
 

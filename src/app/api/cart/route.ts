@@ -1,11 +1,15 @@
-import { findOrCreateCart, prisma, updateCartDetails } from '@/shared/lib';
+import { findOrCreateCart, findUserCartToken, prisma, updateCartDetails } from '@/shared/lib';
 import { CreateCartItemValue } from '@/shared/services/dto/cart.dto';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get('cartToken')?.value;
-    console.log(token);
+    const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
+
+    const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
+    const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
+
+    const token = userCartToken || cartToken;
 
     if (!token) {
       return NextResponse.json({});
@@ -39,7 +43,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(userCart);
+    const resp = NextResponse.json(userCart);
+    resp.cookies.set('cartToken', token);
+    return resp;
   } catch (error) {
     console.log('[CART_GET] Server error', error);
     return NextResponse.json({ message: 'Не удалось получить корзину' }, { status: 500 });
@@ -48,13 +54,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    //берем токен из cookies
-    let token = req.cookies.get('cartToken')?.value;
+    const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
+    const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
+    const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
 
-    //если его нет, создаем
-    if (!token) {
-      token = crypto.randomUUID();
-    }
+    const token = userCartToken || cartToken || crypto.randomUUID(); // получаем нужный токен. Если его нет - создаем
 
     const userCart = await findOrCreateCart(token);
     const data = (await req.json()) as CreateCartItemValue;

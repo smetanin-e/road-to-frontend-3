@@ -1,23 +1,22 @@
 import Image from 'next/image';
-import {
-  Star,
-  Heart,
-  Share2,
-  ShoppingCart,
-  Truck,
-  Shield,
-  RotateCcw,
-  ChevronRight,
-  BookOpen,
-} from 'lucide-react';
+import { Star, BookOpen } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui';
-import { Badge } from '@/shared/components/ui';
-import { Separator } from '@/shared/components/ui';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui';
-import { Avatar, AvatarFallback } from '@/shared/components/ui';
-import { Progress } from '@/shared/components/ui';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Separator,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Avatar,
+  AvatarFallback,
+  Progress,
+} from '@/shared/components/ui';
+
 import { prisma } from '@/shared/lib';
 import {
   AuthorInfo,
@@ -27,7 +26,6 @@ import {
   QuickInfo,
   Specs,
 } from '@/shared/components';
-import Link from 'next/link';
 
 export default async function Product({ params }: { params: Promise<{ id: number }> }) {
   const productId = (await params).id;

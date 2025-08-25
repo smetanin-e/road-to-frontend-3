@@ -15,6 +15,14 @@ export type CartItemState = {
   sale?: number | null;
 };
 
+const defaultState = {
+  loading: true,
+  error: false,
+  items: [],
+  totalAmount: 0,
+  totalQuantity: 0,
+};
+
 interface CartState {
   loading: boolean;
   error: boolean;
@@ -34,15 +42,15 @@ interface CartState {
   /* Запрос на удаление товара из корзины */
   removeCartItem: (id: number) => Promise<void>;
 
+  /* Запрос на удаление всех товаров из корзины */
   cleareCart: () => Promise<void>;
+
+  /* Сбрасываем состояние в default - используем при logout */
+  resetCart: () => void;
 }
 
 export const useCartStore = create<CartState>()((set) => ({
-  loading: true,
-  error: false,
-  items: [],
-  totalAmount: 0,
-  totalQuantity: 0,
+  ...defaultState,
 
   getCartItems: async () => {
     try {
@@ -106,4 +114,5 @@ export const useCartStore = create<CartState>()((set) => ({
       set({ loading: false });
     }
   },
+  resetCart: () => set(defaultState),
 }));

@@ -23,6 +23,8 @@ export async function POST(req: NextRequest) {
       maxAge: 0,
     });
 
+    response.cookies.delete('cartToken');
+
     return response;
   } catch (error) {
     console.error('Ошибка при выходе:', error);

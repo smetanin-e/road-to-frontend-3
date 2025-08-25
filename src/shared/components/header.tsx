@@ -30,6 +30,7 @@ export const Header: React.FC<Props> = () => {
 
   const { items, getCartItems, totalQuantity } = useCartStore();
 
+  console.log('ITEMS!!!!!!!!', items);
   React.useEffect(() => {
     getCartItems();
   }, [getCartItems]);

@@ -2,6 +2,7 @@ import { LoginFormType } from '@/shared/schemas';
 import axios from 'axios';
 import { axiosInstance, getMe } from '@/shared/services';
 import { useUserStore } from '@/shared/store/user';
+import { useCartStore } from '@/shared/store/cart';
 
 export async function signIn(data: LoginFormType) {
   try {
@@ -11,6 +12,8 @@ export async function signIn(data: LoginFormType) {
 
     const user = await getMe();
     useUserStore.getState().setUser(user);
+    //===================================
+    useCartStore.getState().getCartItems();
 
     return res.data;
   } catch (error) {
