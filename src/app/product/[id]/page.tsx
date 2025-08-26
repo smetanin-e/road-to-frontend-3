@@ -93,12 +93,7 @@ export default async function Product({ params }: { params: Promise<{ id: number
                 </TabsList>
 
                 <TabsContent value='description' className='space-y-4'>
-                  {book?.description &&
-                    book.description.map((paragraph, idx) => (
-                      <p key={idx} className='text-muted-foreground leading-relaxed'>
-                        {paragraph}
-                      </p>
-                    ))}
+                  <p className='text-muted-foreground leading-relaxed'>{book.description}</p>
 
                   <Button variant='outline' className='mt-4 bg-transparent'>
                     <BookOpen className='mr-2 h-4 w-4' />

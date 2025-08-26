@@ -197,10 +197,7 @@ async function generateData() {
         books: {
           create: booksForAuthor.map((title) => ({
             title,
-            description: [
-              `Описание книги "${title}".`,
-              `Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate optio ad quam consectetur numquam tempora, doloremque eius dolorum iure doloribus!`,
-            ],
+            description: `Описание книги "${title}".`,
             price: randomInt(200, 1000),
             sale: Math.random() > 0.5 ? randomInt(5, 30) : null,
             categoryId: randomInt(1, 5),
