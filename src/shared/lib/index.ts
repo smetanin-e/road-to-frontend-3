@@ -8,3 +8,4 @@ export { updateCartDetails } from './update-cart-details';
 export { getCartDetails } from './get-cart-details';
 export { beforeDiscountPrice } from './before-discount-price';
 export { authorInitials } from './author-initials';
+export { mergeCarts } from './merge-carts';

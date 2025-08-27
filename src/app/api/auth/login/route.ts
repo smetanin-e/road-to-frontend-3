@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loginUser, generateAccessToken } from '@/shared/services';
 import { loginFormSchema } from '@/shared/schemas';
-import {
-  findOrCreateCart,
-  prisma,
-  setAccessTokenCookie,
-  setRefreshTokenCookie,
-} from '@/shared/lib';
+import { mergeCarts, prisma, setAccessTokenCookie, setRefreshTokenCookie } from '@/shared/lib';
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,26 +22,40 @@ export async function POST(req: NextRequest) {
     const refreshTokenMaxAge = 60 * 60 * 24 * 7;
     const accessTokenMaxAge = 60 * 15; // 15 минут
 
-    // const userCart = await prisma.cart.findFirst({
-    //   where: { userId: user.id },
-    // });
-
-    //!РАЗОБРАТЬСЯ С ПРИВЯЗКОЙ КОРЗИНЫ К ПОЛЬЗОВАТЕЛЮ
-    // if (!userCart) {
-    //   const cartToken = req.cookies.get('cartToken')?.value;
-    //   if (cartToken) {
-    //     const cart = await findOrCreateCart(cartToken);
-
-    //     await prisma.cart.update({
-    //       where: { token: cart.token },
-    //       data: { userId: user.id },
-    //     });
-    //   }
-    // }
-
     const response = NextResponse.json({ accessToken });
     setRefreshTokenCookie(response, refreshToken, refreshTokenMaxAge);
     setAccessTokenCookie(response, accessToken, accessTokenMaxAge);
+
+    const userCart = await prisma.cart.findFirst({
+      where: { userId: user.id },
+    });
+
+    const token = req.cookies.get('cartToken')?.value;
+
+    if (!userCart) {
+      if (token) {
+        await prisma.cart.update({
+          where: { token },
+          data: { userId: user.id },
+        });
+
+        response.cookies.delete('cartToken');
+      } else {
+        await prisma.cart.create({
+          data: {
+            token: crypto.randomUUID(),
+            userId: user.id,
+          },
+        });
+      }
+    } else {
+      if (token) {
+        //объединить козины
+        await mergeCarts(token, user.id);
+        response.cookies.delete('cartToken');
+      }
+    }
+
     return response;
   } catch (error) {
     if (error instanceof Error) {

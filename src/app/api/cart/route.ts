@@ -7,9 +7,11 @@ export async function GET(req: NextRequest) {
     const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
 
     const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
-    const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
+    // const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
 
-    const token = userCartToken || cartToken;
+    // const token = userCartToken || cartToken;
+
+    const token = userCartToken || req.cookies.get('cartToken')?.value;
 
     if (!token) {
       return NextResponse.json({});
@@ -44,7 +46,10 @@ export async function GET(req: NextRequest) {
     });
 
     const resp = NextResponse.json(userCart);
-    resp.cookies.set('cartToken', token);
+    if (!userCartToken) {
+      resp.cookies.set('cartToken', token);
+    }
+
     return resp;
   } catch (error) {
     console.log('[CART_GET] Server error', error);
@@ -56,10 +61,19 @@ export async function POST(req: NextRequest) {
   try {
     const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
     const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
-    const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
+    // const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
 
-    const token = userCartToken || cartToken || crypto.randomUUID(); // получаем нужный токен. Если его нет - создаем
+    // const token = userCartToken || cartToken || crypto.randomUUID(); // получаем нужный токен. Если его нет - создаем
 
+    // const userCart = await findOrCreateCart(token);
+
+    //берем токен из cookies
+    let token = userCartToken || req.cookies.get('cartToken')?.value;
+
+    //если его нет, создаем
+    if (!token) {
+      token = crypto.randomUUID();
+    }
     const userCart = await findOrCreateCart(token);
     const data = (await req.json()) as CreateCartItemValue;
 
@@ -89,6 +103,7 @@ export async function POST(req: NextRequest) {
 
     const updateUserCart = await updateCartDetails(token);
     const resp = NextResponse.json(updateUserCart);
+
     resp.cookies.set('cartToken', token);
 
     return resp;
