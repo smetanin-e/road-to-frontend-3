@@ -26,14 +26,19 @@ export async function POST(req: NextRequest) {
     setRefreshTokenCookie(response, refreshToken, refreshTokenMaxAge);
     setAccessTokenCookie(response, accessToken, accessTokenMaxAge);
 
+    //==================================== Обработка корзины
+
+    //Ищем корзину пользователя по его id
     const userCart = await prisma.cart.findFirst({
       where: { userId: user.id },
     });
 
+    // получаем токен гостевой корзины из куки
     const token = req.cookies.get('cartToken')?.value;
 
     if (!userCart) {
       if (token) {
+        //Если нет пользовательской корзины, но есть гостевая, то привязываем ее к пользователю
         await prisma.cart.update({
           where: { token },
           data: { userId: user.id },
@@ -41,6 +46,8 @@ export async function POST(req: NextRequest) {
 
         response.cookies.delete('cartToken');
       } else {
+        //если нет и гостевой и пользовательской корзины, то создаем корзину и
+        //привязываем к пользователю
         await prisma.cart.create({
           data: {
             token: crypto.randomUUID(),
@@ -50,7 +57,8 @@ export async function POST(req: NextRequest) {
       }
     } else {
       if (token) {
-        //объединить козины
+        //если есть обе корзины - объединяем их в пользовательскую
+        //и удаляем гостевую, используя функцию mergeCarts
         await mergeCarts(token, user.id);
         response.cookies.delete('cartToken');
       }

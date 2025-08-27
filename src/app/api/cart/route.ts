@@ -5,12 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   try {
     const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
-
     const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
-    // const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
-
-    // const token = userCartToken || cartToken;
-
     const token = userCartToken || req.cookies.get('cartToken')?.value;
 
     if (!token) {
@@ -61,13 +56,6 @@ export async function POST(req: NextRequest) {
   try {
     const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
     const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
-    // const cartToken = req.cookies.get('cartToken')?.value; // получаем токен из куки, если есть
-
-    // const token = userCartToken || cartToken || crypto.randomUUID(); // получаем нужный токен. Если его нет - создаем
-
-    // const userCart = await findOrCreateCart(token);
-
-    //берем токен из cookies
     let token = userCartToken || req.cookies.get('cartToken')?.value;
 
     //если его нет, создаем
