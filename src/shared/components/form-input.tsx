@@ -5,14 +5,23 @@ import { useFormContext } from 'react-hook-form';
 
 import { CleareButton, ErrorText, RequiredSymbol } from '@/shared/components';
 import { Input } from '@/shared/components/ui';
+import { Phone } from 'lucide-react';
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   required?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
-export const FormInput: React.FC<Props> = ({ className, name, label, required, ...props }) => {
+export const FormInput: React.FC<Props> = ({
+  className,
+  name,
+  label,
+  required,
+  children,
+  ...props
+}) => {
   const {
     register,
     formState: { errors },
@@ -29,13 +38,15 @@ export const FormInput: React.FC<Props> = ({ className, name, label, required, .
   return (
     <div className={className}>
       {label && (
-        <p className='font-medium mb-2'>
+        <p className='font-medium mb-1 text-sm'>
           {label} {required && <RequiredSymbol />}
         </p>
       )}
 
       <div className='relative'>
-        <Input {...props} {...register(name)} />
+        {children}
+
+        <Input {...props} {...register(name)} className={children?.valueOf && 'pl-9'} />
         {value && <CleareButton onClick={onClickCleare} />}
       </div>
 

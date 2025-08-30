@@ -41,6 +41,7 @@
     "nextjs-toploader": "^3.8.16",
     "prisma": "^6.13.0",
     "react": "19.1.0",
+    "react-dadata": "^2.28.0-beta.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.5.2",

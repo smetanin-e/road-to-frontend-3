@@ -20,8 +20,11 @@ export { LoadingBounce } from './loading-bounce';
 export { DeliveryOptions } from './delivery-options';
 export { AuthModalProvider } from './auth-modal-provider';
 
+export { AdressInput } from './adress-input';
+
 export * from './forms';
 export * from './cart';
 export * from './book';
+export * from './checkout';
 
 export { ProfileButton } from './prifile-button';

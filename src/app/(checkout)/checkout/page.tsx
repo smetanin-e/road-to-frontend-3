@@ -34,9 +34,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select';
-import { DeliveryOptions } from '@/shared/components';
+import { CheckoutForm, DeliveryOptions } from '@/shared/components';
 import { useCartStore } from '@/shared/store/cart';
 import { useDeliverytore } from '@/shared/store/delivery-method';
+import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
 
 interface OrderItem {
   id: string;
@@ -114,7 +115,7 @@ export default function Checkout() {
   return (
     <div className='min-h-screen bg-background'>
       {/* Breadcrumbs */}
-      <div className='border-b'>
+      {/* <div className='border-b'>
         <div className='container mx-auto px-4 py-3'>
           <nav className='flex items-center space-x-2 text-sm text-muted-foreground'>
             <a href='/' className='hover:text-foreground transition-colors'>
@@ -128,7 +129,7 @@ export default function Checkout() {
             <span className='text-foreground'>Оформление заказа</span>
           </nav>
         </div>
-      </div>
+      </div> */}
 
       <div className='container mx-auto px-4 py-8'>
         <h1 className='text-3xl font-bold mb-8'>Оформление заказа</h1>
@@ -171,222 +172,11 @@ export default function Checkout() {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left - Forms */}
           <div className='lg:col-span-2 space-y-6'>
+            <CheckoutForm />
             {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <User className='h-5 w-5' />
-                  Контактные данные
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <div>
-                    <Label htmlFor='firstName'>Имя *</Label>
-                    <Input
-                      id='firstName'
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      placeholder='Введите имя'
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor='lastName'>Фамилия *</Label>
-                    <Input
-                      id='lastName'
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      placeholder='Введите фамилию'
-                    />
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <div>
-                    <Label htmlFor='phone'>Телефон *</Label>
-                    <div className='relative'>
-                      <Phone className='absolute left-3 top-3 h-4 w-4 text-muted-foreground' />
-                      <Input
-                        id='phone'
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                        placeholder='+7 (999) 123-45-67'
-                        className='pl-10'
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor='email'>Email *</Label>
-                    <div className='relative'>
-                      <Mail className='absolute left-3 top-3 h-4 w-4 text-muted-foreground' />
-                      <Input
-                        id='email'
-                        type='email'
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        placeholder='example@mail.com'
-                        className='pl-10'
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className='flex items-center space-x-2'>
-                  <Checkbox
-                    id='saveData'
-                    checked={formData.saveData}
-                    onCheckedChange={(checked) => handleInputChange('saveData', checked as boolean)}
-                  />
-                  <Label htmlFor='saveData' className='text-sm'>
-                    Сохранить данные для следующих заказов
-                  </Label>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Delivery Address */}
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <MapPin className='h-5 w-5' />
-                  Адрес доставки
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <div>
-                  <Label htmlFor='city'>Город *</Label>
-                  <Select
-                    value={formData.city}
-                    onValueChange={(value) => handleInputChange('city', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder='Выберите город' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='moscow'>Москва</SelectItem>
-                      <SelectItem value='spb'>Санкт-Петербург</SelectItem>
-                      <SelectItem value='ekb'>Екатеринбург</SelectItem>
-                      <SelectItem value='nsk'>Новосибирск</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor='address'>Улица, дом *</Label>
-                  <div className='relative'>
-                    <Home className='absolute left-3 top-3 h-4 w-4 text-muted-foreground' />
-                    <Input
-                      id='address'
-                      value={formData.address}
-                      onChange={(e) => handleInputChange('address', e.target.value)}
-                      placeholder='ул. Пушкина, д. 10'
-                      className='pl-10'
-                    />
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <div>
-                    <Label htmlFor='apartment'>Квартира/офис</Label>
-                    <Input
-                      id='apartment'
-                      value={formData.apartment}
-                      onChange={(e) => handleInputChange('apartment', e.target.value)}
-                      placeholder='кв. 25'
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor='postalCode'>Индекс</Label>
-                    <Input
-                      id='postalCode'
-                      value={formData.postalCode}
-                      onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                      placeholder='123456'
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Delivery Method */}
             <DeliveryOptions totalAmount={totalAmount} />
-            {/* <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <Truck className='h-5 w-5' />
-                  Способ доставки
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <RadioGroup
-                  value={formData.deliveryMethod}
-                  onValueChange={(value) => handleInputChange('deliveryMethod', value)}
-                >
-                  <div className='space-y-3'>
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='standard' id='standard' />
-                      <Label htmlFor='standard' className='flex-1 cursor-pointer'>
-                        <div className='flex justify-between items-center'>
-                          <div>
-                            <p className='font-medium'>Стандартная доставка</p>
-                            <p className='text-sm text-muted-foreground'>3-5 рабочих дней</p>
-                          </div>
-                          <span className='font-medium'>200 ₽</span>
-                        </div>
-                      </Label>
-                    </div>
-
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='express' id='express' />
-                      <Label htmlFor='express' className='flex-1 cursor-pointer'>
-                        <div className='flex justify-between items-center'>
-                          <div>
-                            <p className='font-medium'>Экспресс доставка</p>
-                            <p className='text-sm text-muted-foreground'>1-2 рабочих дня</p>
-                          </div>
-                          <span className='font-medium'>500 ₽</span>
-                        </div>
-                      </Label>
-                    </div>
-
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='pickup' id='pickup' />
-                      <Label htmlFor='pickup' className='flex-1 cursor-pointer'>
-                        <div className='flex justify-between items-center'>
-                          <div>
-                            <p className='font-medium'>Самовывоз</p>
-                            <p className='text-sm text-muted-foreground'>
-                              ул. Книжная, 15 (готов сегодня)
-                            </p>
-                          </div>
-                          <span className='font-medium text-green-600'>Бесплатно</span>
-                        </div>
-                      </Label>
-                    </div>
-                  </div>
-                </RadioGroup>
-
-                {formData.deliveryMethod !== 'pickup' && (
-                  <div className='mt-4'>
-                    <Label htmlFor='deliveryTime'>Удобное время доставки</Label>
-                    <Select
-                      value={formData.deliveryTime}
-                      onValueChange={(value) => handleInputChange('deliveryTime', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder='Выберите время' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='morning'>Утром (9:00 - 12:00)</SelectItem>
-                        <SelectItem value='afternoon'>Днем (12:00 - 18:00)</SelectItem>
-                        <SelectItem value='evening'>Вечером (18:00 - 21:00)</SelectItem>
-                        <SelectItem value='anytime'>Любое время</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </CardContent>
-            </Card> */}
 
             {/* Payment Method */}
             <Card>
@@ -444,50 +234,6 @@ export default function Checkout() {
                     </div>
                   </div>
                 </RadioGroup>
-              </CardContent>
-            </Card>
-
-            {/* Gift Options */}
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <Gift className='h-5 w-5' />
-                  Подарочные опции
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='flex items-center space-x-2'>
-                  <Checkbox
-                    id='isGift'
-                    checked={formData.isGift}
-                    onCheckedChange={(checked) => handleInputChange('isGift', checked as boolean)}
-                  />
-                  <Label htmlFor='isGift'>Это подарок</Label>
-                </div>
-
-                {formData.isGift && (
-                  <div className='space-y-4 pl-6 border-l-2 border-muted'>
-                    <div>
-                      <Label htmlFor='recipientName'>Имя получателя</Label>
-                      <Input
-                        id='recipientName'
-                        value={formData.recipientName}
-                        onChange={(e) => handleInputChange('recipientName', e.target.value)}
-                        placeholder='Введите имя получателя'
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor='giftMessage'>Сообщение к подарку</Label>
-                      <Textarea
-                        id='giftMessage'
-                        value={formData.giftMessage}
-                        onChange={(e) => handleInputChange('giftMessage', e.target.value)}
-                        placeholder='Напишите поздравление...'
-                        rows={3}
-                      />
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
