@@ -34,10 +34,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select';
-import { CheckoutForm, DeliveryOptions } from '@/shared/components';
+import {
+  CheckoutForm,
+  ContactInformationForm,
+  DeliveryOptions,
+  Comment,
+} from '@/shared/components';
 import { useCartStore } from '@/shared/store/cart';
 import { useDeliverytore } from '@/shared/store/delivery-method';
 import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
+import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 interface OrderItem {
   id: string;
@@ -48,7 +55,32 @@ interface OrderItem {
   image: string;
 }
 
+export interface CheckoutFormValues {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  deliveryType: 'standard' | 'express' | 'pickup';
+  address?: string;
+  comment?: string;
+}
+
 export default function Checkout() {
+  const form = useForm<CheckoutFormValues>();
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    try {
+      console.log(data);
+
+      toast.success('Ваш заказ принят', { icon: '✅' });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error [CHECKOUT_FORM]', error);
+        return toast.error(error.message, { icon: '❌' });
+      }
+    }
+  };
+
   const { deliveryMethod } = useDeliverytore();
   const { totalAmount } = useCartStore();
   const [currentStep, setCurrentStep] = useState(1);
@@ -152,125 +184,136 @@ export default function Checkout() {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {/* Left - Forms */}
-          <div className='lg:col-span-2 space-y-6'>
-            <CheckoutForm />
-            {/* Contact Information */}
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+              {/* Left - Forms */}
+              <div className='lg:col-span-2 space-y-6'>
+                {/* Contact Information */}
+                <ContactInformationForm />
 
-            {/* Comment */}
-          </div>
+                {/* Delivery Method */}
+                <DeliveryOptions />
 
-          {/* Right - Order Summary */}
-          <div className='space-y-6'>
-            <div className='sticky top-8 space-y-6'>
-              {/* Order Items */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Ваш заказ</CardTitle>
-                </CardHeader>
-                <CardContent className='space-y-4'>
-                  {orderItems.map((item) => (
-                    <div key={item.id} className='flex gap-3'>
-                      <Image
-                        src={item.image || '/placeholder.svg'}
-                        alt={item.title}
-                        width={60}
-                        height={80}
-                        className='rounded border flex-shrink-0'
-                      />
-                      <div className='flex-1 min-w-0'>
-                        <h4 className='font-medium text-sm line-clamp-2'>{item.title}</h4>
-                        <p className='text-xs text-muted-foreground'>{item.author}</p>
-                        <div className='flex items-center justify-between mt-1'>
-                          <span className='text-sm'>{item.quantity} шт.</span>
-                          <span className='font-medium'>{item.price * item.quantity} ₽</span>
+                {/* Delivery Address */}
+                {form.watch('deliveryType') !== 'pickup' && <DeliveryAddress />}
+
+                {/* Comment */}
+                <Comment />
+              </div>
+
+              {/* Right - Order Summary */}
+              <div className='space-y-6'>
+                <div className='sticky top-8 space-y-6'>
+                  {/* Order Items */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Ваш заказ</CardTitle>
+                    </CardHeader>
+                    <CardContent className='space-y-4'>
+                      {orderItems.map((item) => (
+                        <div key={item.id} className='flex gap-3'>
+                          <Image
+                            src={item.image || '/placeholder.svg'}
+                            alt={item.title}
+                            width={60}
+                            height={80}
+                            className='rounded border flex-shrink-0'
+                          />
+                          <div className='flex-1 min-w-0'>
+                            <h4 className='font-medium text-sm line-clamp-2'>{item.title}</h4>
+                            <p className='text-xs text-muted-foreground'>{item.author}</p>
+                            <div className='flex items-center justify-between mt-1'>
+                              <span className='text-sm'>{item.quantity} шт.</span>
+                              <span className='font-medium'>{item.price * item.quantity} ₽</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <Separator />
+
+                      <div className='space-y-2'>
+                        <div className='flex justify-between'>
+                          <span>Товары</span>
+                          <span>{subtotal} ₽</span>
+                        </div>
+                        <div className='flex justify-between'>
+                          <span>Доставка</span>
+                          <span>{deliveryPrice === 0 ? 'Бесплатно' : `${deliveryPrice} ₽`}</span>
                         </div>
                       </div>
-                    </div>
-                  ))}
 
-                  <Separator />
+                      <Separator />
 
-                  <div className='space-y-2'>
-                    <div className='flex justify-between'>
-                      <span>Товары</span>
-                      <span>{subtotal} ₽</span>
-                    </div>
-                    <div className='flex justify-between'>
-                      <span>Доставка</span>
-                      <span>{deliveryPrice === 0 ? 'Бесплатно' : `${deliveryPrice} ₽`}</span>
-                    </div>
-                  </div>
+                      <div className='flex justify-between text-lg font-bold'>
+                        <span>Итого</span>
+                        <span>{total} ₽</span>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                  <Separator />
+                  {/* Security Info */}
+                  <Card>
+                    <CardContent className='p-4'>
+                      <div className='space-y-3 text-sm'>
+                        <div className='flex items-center gap-2 text-green-600'>
+                          <Shield className='h-4 w-4' />
+                          <span>Безопасная оплата SSL</span>
+                        </div>
+                        <div className='flex items-center gap-2'>
+                          <Clock className='h-4 w-4' />
+                          <span>Быстрое оформление</span>
+                        </div>
+                        <div className='flex items-center gap-2'>
+                          <AlertCircle className='h-4 w-4' />
+                          <span>Возврат в течение 30 дней</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                  <div className='flex justify-between text-lg font-bold'>
-                    <span>Итого</span>
-                    <span>{total} ₽</span>
-                  </div>
-                </CardContent>
-              </Card>
+                  {/* Agreement and Submit */}
+                  <Card>
+                    <CardContent className='p-4 space-y-4'>
+                      <div className='flex items-start space-x-2'>
+                        <Checkbox id='agreement' />
+                        <Label htmlFor='agreement' className='text-sm leading-relaxed'>
+                          Я согласен с{' '}
+                          <a href='#' className='text-primary hover:underline'>
+                            условиями использования
+                          </a>{' '}
+                          и{' '}
+                          <a href='#' className='text-primary hover:underline'>
+                            политикой конфиденциальности
+                          </a>
+                        </Label>
+                      </div>
 
-              {/* Security Info */}
-              <Card>
-                <CardContent className='p-4'>
-                  <div className='space-y-3 text-sm'>
-                    <div className='flex items-center gap-2 text-green-600'>
-                      <Shield className='h-4 w-4' />
-                      <span>Безопасная оплата SSL</span>
-                    </div>
-                    <div className='flex items-center gap-2'>
-                      <Clock className='h-4 w-4' />
-                      <span>Быстрое оформление</span>
-                    </div>
-                    <div className='flex items-center gap-2'>
-                      <AlertCircle className='h-4 w-4' />
-                      <span>Возврат в течение 30 дней</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                      <div className='flex items-center space-x-2'>
+                        <Checkbox
+                          id='subscribe'
+                          checked={formData.subscribe}
+                          onCheckedChange={(checked) =>
+                            handleInputChange('subscribe', checked as boolean)
+                          }
+                        />
+                        <Label htmlFor='subscribe' className='text-sm'>
+                          Подписаться на новости и акции
+                        </Label>
+                      </div>
 
-              {/* Agreement and Submit */}
-              <Card>
-                <CardContent className='p-4 space-y-4'>
-                  <div className='flex items-start space-x-2'>
-                    <Checkbox id='agreement' />
-                    <Label htmlFor='agreement' className='text-sm leading-relaxed'>
-                      Я согласен с{' '}
-                      <a href='#' className='text-primary hover:underline'>
-                        условиями использования
-                      </a>{' '}
-                      и{' '}
-                      <a href='#' className='text-primary hover:underline'>
-                        политикой конфиденциальности
-                      </a>
-                    </Label>
-                  </div>
-
-                  <div className='flex items-center space-x-2'>
-                    <Checkbox
-                      id='subscribe'
-                      checked={formData.subscribe}
-                      onCheckedChange={(checked) =>
-                        handleInputChange('subscribe', checked as boolean)
-                      }
-                    />
-                    <Label htmlFor='subscribe' className='text-sm'>
-                      Подписаться на новости и акции
-                    </Label>
-                  </div>
-
-                  <Button className='w-full' size='lg' onClick={handleSubmit}>
-                    <CreditCard className='mr-2 h-4 w-4' />
-                    Оформить заказ на {total} ₽
-                  </Button>
-                </CardContent>
-              </Card>
+                      <Button className='w-full' size='lg' type='submit'>
+                        <CreditCard className='mr-2 h-4 w-4' />
+                        Оформить заказ на {total} ₽
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </form>{' '}
+        </FormProvider>
       </div>
     </div>
   );

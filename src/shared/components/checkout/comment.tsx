@@ -1,15 +1,14 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Textarea } from '@/shared/components/ui';
 import { MessageSquare } from 'lucide-react';
-import { Controller, UseFormReturn } from 'react-hook-form';
-import { CheckoutFormValues } from '../forms/checkout-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props {
   className?: string;
-  form: UseFormReturn<CheckoutFormValues>;
 }
 
-export const Comment: React.FC<Props> = ({ form }) => {
+export const Comment: React.FC<Props> = () => {
+  const { control } = useFormContext();
   return (
     <Card>
       <CardHeader>
@@ -20,7 +19,7 @@ export const Comment: React.FC<Props> = ({ form }) => {
       </CardHeader>
       <CardContent>
         <Controller
-          control={form.control}
+          control={control}
           name='comment'
           render={({ field }) => (
             <Textarea

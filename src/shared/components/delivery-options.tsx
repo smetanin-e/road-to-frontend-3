@@ -11,19 +11,20 @@ import {
 } from '@/shared/components/ui';
 import { Truck } from 'lucide-react';
 import { useCartStore } from '@/shared/store/cart';
-import { Controller, UseFormReturn } from 'react-hook-form';
-import { CheckoutFormValues } from './forms/checkout-form';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { useDeliverytore } from '../store/delivery-method';
 
 interface Props {
   className?: string;
-  form: UseFormReturn<CheckoutFormValues>;
 }
 
-export const DeliveryOptions: React.FC<Props> = ({ form }) => {
+export const DeliveryOptions: React.FC<Props> = () => {
   const { deliveryMethod } = useDeliverytore();
   const { totalAmount } = useCartStore();
   const freeDeliveryThreshold = 2000;
+
+  const { control } = useFormContext();
 
   return (
     <Card>
@@ -36,7 +37,7 @@ export const DeliveryOptions: React.FC<Props> = ({ form }) => {
       <CardContent>
         <Controller
           name='deliveryType'
-          control={form.control}
+          control={control}
           defaultValue={deliveryMethod} // можно задать дефолт
           render={({ field }) => (
             <RadioGroup value={field.value} onValueChange={field.onChange}>
