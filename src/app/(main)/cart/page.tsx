@@ -23,13 +23,13 @@ import { Input } from '@/shared/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Label } from '@/shared/components/ui/label';
 import { Progress } from '@/shared/components/ui/progress';
-import { CartItems, DeliveryMethods, DeliveryOptions } from '@/shared/components';
+import { CartDelivery, CartItems } from '@/shared/components';
 import Link from 'next/link';
 import { useCartStore } from '@/shared/store/cart';
 import React from 'react';
 import { beforeDiscountPrice } from '@/shared/lib';
 import { useDeliveryPrice } from '@/shared/hooks';
-import { useDeliverytore } from '@/shared/store/delivery-method';
+import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 
 interface CartItem {
   id: string;
@@ -44,7 +44,7 @@ interface CartItem {
 
 export default function Cart() {
   const { items, totalQuantity, totalAmount, getCartItems } = useCartStore();
-  const { deliveryMethod } = useDeliverytore();
+  const { deliveryMethod } = useDeliveryStore();
 
   React.useEffect(() => {
     getCartItems();
@@ -210,7 +210,7 @@ export default function Cart() {
             <div className='space-y-6'>
               <div className='sticky top-8 space-y-6'>
                 {/* Delivery Options */}
-                <DeliveryMethods totalAmount={totalAmount} />
+                <CartDelivery />
 
                 {/* Order Summary */}
                 <Card>

@@ -2,49 +2,25 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import {
-  ChevronRight,
-  User,
-  MapPin,
-  Truck,
-  CreditCard,
-  Shield,
-  Clock,
-  Gift,
-  Check,
-  Phone,
-  Mail,
-  Home,
-  MessageSquare,
-  AlertCircle,
-} from 'lucide-react';
+import { User, Truck, CreditCard, Shield, Clock, Check, AlertCircle } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { Separator } from '@/shared/components/ui/separator';
-import { Input } from '@/shared/components/ui/input';
-import { Label } from '@/shared/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
-import { Checkbox } from '@/shared/components/ui/checkbox';
-import { Textarea } from '@/shared/components/ui/textarea';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/components/ui/select';
-import {
-  CheckoutForm,
-  ContactInformationForm,
-  DeliveryOptions,
-  Comment,
-} from '@/shared/components';
-import { useCartStore } from '@/shared/store/cart';
-import { useDeliverytore } from '@/shared/store/delivery-method';
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Separator,
+  Label,
+  Checkbox,
+} from '@/shared/components/ui';
+
+import { ContactInformationForm, DeliveryOptions, Comment } from '@/shared/components';
+import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useCartStore } from '@/shared/store/cart';
 
 interface OrderItem {
   id: string;
@@ -66,6 +42,8 @@ export interface CheckoutFormValues {
 }
 
 export default function Checkout() {
+  const { deliveryMethod } = useDeliveryStore();
+  const { items } = useCartStore();
   const form = useForm<CheckoutFormValues>();
 
   const onSubmit = async (data: CheckoutFormValues) => {
@@ -81,8 +59,6 @@ export default function Checkout() {
     }
   };
 
-  const { deliveryMethod } = useDeliverytore();
-  const { totalAmount } = useCartStore();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -137,11 +113,6 @@ export default function Checkout() {
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = () => {
-    // Здесь будет логика отправки заказа
-    alert('Заказ оформлен!');
   };
 
   return (
@@ -211,10 +182,10 @@ export default function Checkout() {
                       <CardTitle>Ваш заказ</CardTitle>
                     </CardHeader>
                     <CardContent className='space-y-4'>
-                      {orderItems.map((item) => (
+                      {items.map((item) => (
                         <div key={item.id} className='flex gap-3'>
                           <Image
-                            src={item.image || '/placeholder.svg'}
+                            src={item.imageUrl || '/placeholder.svg'}
                             alt={item.title}
                             width={60}
                             height={80}
