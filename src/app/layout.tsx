@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
-import { AuthModalProvider, Header, Providers } from '@/shared/components';
+import { AuthModalProvider, Providers } from '@/shared/components';
 
 import { StoreProvider } from '@/shared/components/store-provider';
 
@@ -23,9 +23,11 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='ru'>
+      <head>
+        <link data-rh='true' rel='icon' href='/logo.png' />
+      </head>
       <body className={`${nunito.className}  antialiased`}>
         <StoreProvider>
-          <Header />
           {children}
           <Providers />
           <AuthModalProvider />

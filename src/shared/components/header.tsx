@@ -23,9 +23,11 @@ import { useCartStore } from '../store/cart';
 
 interface Props {
   className?: string;
+  hasSearch?: boolean;
+  hasMenu?: boolean;
 }
 
-export const Header: React.FC<Props> = () => {
+export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) => {
   const user = useUserStore((state) => state.user);
 
   const { items, getCartItems, totalQuantity } = useCartStore();
@@ -55,7 +57,7 @@ export const Header: React.FC<Props> = () => {
             </div>
           </Link>
 
-          <SearchInput />
+          {hasSearch && <SearchInput />}
           <div className='flex gap-9 items-end'>
             <Link href={'/cart'}>
               <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
@@ -89,7 +91,7 @@ export const Header: React.FC<Props> = () => {
           </div>
         </div>
         {/* навигация */}
-        <HeaderMenu />
+        {hasMenu && <HeaderMenu />}
       </Container>
     </header>
   );
