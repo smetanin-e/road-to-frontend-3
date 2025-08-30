@@ -18,6 +18,7 @@ export { SearchInput } from './search';
 export { Spinner } from './spinner';
 export { LoadingBounce } from './loading-bounce';
 export { DeliveryOptions } from './delivery-options';
+export { AuthModalProvider } from './auth-modal-provider';
 
 export * from './forms';
 export * from './cart';

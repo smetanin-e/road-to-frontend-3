@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
-import { Header, Providers } from '@/shared/components';
+import { AuthModalProvider, Header, Providers } from '@/shared/components';
 
 import { StoreProvider } from '@/shared/components/store-provider';
 
@@ -28,6 +28,7 @@ export default async function RootLayout({
           <Header />
           {children}
           <Providers />
+          <AuthModalProvider />
         </StoreProvider>
       </body>
     </html>

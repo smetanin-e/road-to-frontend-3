@@ -10,6 +10,7 @@ import { loginFormSchema, LoginFormType } from '@/shared/schemas';
 
 import { FormInput } from '@/shared/components';
 import { Button, Label } from '@/shared/components/ui';
+import { useAuthModalStore } from '@/shared/store/auth-modal';
 
 interface Props {
   className?: string;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export const LoginForm: React.FC<Props> = ({ onClose }) => {
+  const { returnUrl } = useAuthModalStore();
   const router = useRouter();
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
@@ -31,7 +33,10 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
       await signIn(data);
 
       onClose?.();
-      router.push('/');
+      if (returnUrl) {
+        router.replace(returnUrl);
+      }
+
       toast.success('Вы успешно вошли в аккаунт', { icon: '✅' });
     } catch (error) {
       if (error instanceof Error) {

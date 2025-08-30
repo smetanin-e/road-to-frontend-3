@@ -245,11 +245,12 @@ export default function Cart() {
                       <span>К оплате</span>
                       <span>{total} ₽</span>
                     </div>
-
-                    <Button className='w-full' size='lg'>
-                      <CreditCard className='mr-2 h-4 w-4' />
-                      Перейти к оформлению
-                    </Button>
+                    <Link href={'/checkout'}>
+                      <Button className='w-full' size='lg'>
+                        <CreditCard className='mr-2 h-4 w-4' />
+                        Перейти к оформлению
+                      </Button>
+                    </Link>
 
                     <div className='space-y-2 text-sm text-muted-foreground'>
                       <div className='flex items-center gap-2'>

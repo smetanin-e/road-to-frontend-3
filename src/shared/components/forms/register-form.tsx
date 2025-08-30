@@ -11,6 +11,7 @@ import { registerFormSchema, RegisterFormType } from '@/shared/schemas';
 
 import { FormInput } from '@/shared/components';
 import { Button, Label } from '@/shared/components/ui';
+import { useAuthModalStore } from '@/shared/store/auth-modal';
 
 interface Props {
   className?: string;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export const RegisterForm: React.FC<Props> = ({ onClose }) => {
+  const { returnUrl } = useAuthModalStore();
   const router = useRouter();
   const form = useForm<RegisterFormType>({
     resolver: zodResolver(registerFormSchema),
@@ -35,7 +37,9 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
     try {
       await registerUser(data);
       onClose?.();
-      // router.push('/private');
+      if (returnUrl) {
+        router.replace(returnUrl);
+      }
       toast.success('Вы успешно зарегистрированы!!!', { icon: '✅' });
     } catch (error) {
       if (error instanceof Error) {
@@ -54,7 +58,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
           </div>
           <div className='space-y-2'>
             <Label htmlFor='lastName'>Фамилия</Label>
-            <FormInput name='lastName' id='lastName' type='text' placeholder='Иванов' required />
+            <FormInput name='lastName' id='lastName' type='text' placeholder='Фамилия' required />
           </div>
         </div>
         {/* <PhoneInput /> */}

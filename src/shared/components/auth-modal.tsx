@@ -26,7 +26,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, type, onSwitchType }
             {type === 'login' ? 'Создать аккаунт' : 'Добро пожаловать'}
           </DialogTitle>
           <DialogDescription className='text-center'>
-            {type === 'login'
+            {type === 'register'
               ? 'Заполните форму для регистрации'
               : 'Введите email и пароль для входа в аккаунт'}
           </DialogDescription>

@@ -103,7 +103,10 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const token = req.cookies.get('cartToken')?.value;
+    const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
+    const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
+
+    const token = userCartToken || req.cookies.get('cartToken')?.value;
     if (!token) {
       return NextResponse.json('Cart token not found');
     }

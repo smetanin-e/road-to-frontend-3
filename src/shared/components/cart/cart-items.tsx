@@ -22,13 +22,14 @@ interface Props {
 
 export const CartItems: React.FC<Props> = () => {
   const [open, setOpen] = React.useState(false);
-  const { items, getCartItems, cleareCart } = useCartStore();
+  const { items, getCartItems, cleareCart, resetCart } = useCartStore();
   React.useEffect(() => {
     getCartItems();
   }, []);
 
   const handleCleareCart = () => {
     cleareCart();
+    resetCart();
     setOpen(false);
   };
 
