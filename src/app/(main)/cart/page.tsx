@@ -23,7 +23,7 @@ import { Input } from '@/shared/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Label } from '@/shared/components/ui/label';
 import { Progress } from '@/shared/components/ui/progress';
-import { CartItems, DeliveryOptions } from '@/shared/components';
+import { CartItems, DeliveryMethods, DeliveryOptions } from '@/shared/components';
 import Link from 'next/link';
 import { useCartStore } from '@/shared/store/cart';
 import React from 'react';
@@ -210,7 +210,7 @@ export default function Cart() {
             <div className='space-y-6'>
               <div className='sticky top-8 space-y-6'>
                 {/* Delivery Options */}
-                <DeliveryOptions totalAmount={totalAmount} />
+                <DeliveryMethods totalAmount={totalAmount} />
 
                 {/* Order Summary */}
                 <Card>

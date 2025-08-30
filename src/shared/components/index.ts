@@ -20,7 +20,7 @@ export { LoadingBounce } from './loading-bounce';
 export { DeliveryOptions } from './delivery-options';
 export { AuthModalProvider } from './auth-modal-provider';
 
-export { AdressInput } from './adress-input';
+export { AddressInput } from './address-input';
 
 export * from './forms';
 export * from './cart';

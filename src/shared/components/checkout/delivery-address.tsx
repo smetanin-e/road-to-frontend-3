@@ -2,11 +2,12 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui';
 import { MapPin } from 'lucide-react';
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { AdressInput } from '@/shared/components';
+import { AddressInput } from '@/shared/components';
+import { CheckoutFormValues } from '../forms/checkout-form';
 
 interface Props {
   className?: string;
-  form: UseFormReturn<any>;
+  form: UseFormReturn<CheckoutFormValues>;
 }
 
 export const DeliveryAddress: React.FC<Props> = ({ form }) => {
@@ -21,11 +22,11 @@ export const DeliveryAddress: React.FC<Props> = ({ form }) => {
       <CardContent className='space-y-4 pb-3'>
         <Controller
           control={form.control}
-          name='adress'
+          name='address'
           rules={{ required: 'Поле обязательно для заполнения' }}
           render={({ field, fieldState }) => (
             <div className='relative'>
-              <AdressInput onChange={field.onChange} />
+              <AddressInput onChange={field.onChange} />
 
               {fieldState.error && (
                 <p className='absolute pt-1 text-[12px] text-destructive pl-2'>

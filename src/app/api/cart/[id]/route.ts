@@ -1,4 +1,4 @@
-import { prisma, updateCartDetails } from '@/shared/lib';
+import { findUserCartToken, prisma, updateCartDetails } from '@/shared/lib';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -7,7 +7,10 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     const itemId = Number(id);
     const data = (await req.json()) as { quantity: number };
 
-    const token = req.cookies.get('cartToken')?.value;
+    const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
+    const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
+
+    const token = userCartToken || req.cookies.get('cartToken')?.value;
     if (!token) {
       return NextResponse.json({ error: 'Cart token not found' });
     }
@@ -40,7 +43,10 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const id = Number(params.id);
-    const token = req.cookies.get('cartToken')?.value;
+
+    const refreshToken = req.cookies.get('refresh_token')?.value; //берем из куки refreshToken
+    const userCartToken = await findUserCartToken(refreshToken); // получаем токен, если есть
+    const token = userCartToken || req.cookies.get('cartToken')?.value;
 
     if (!token) {
       return NextResponse.json({ error: 'Cart token not found' });

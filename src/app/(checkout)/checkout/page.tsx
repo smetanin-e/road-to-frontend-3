@@ -114,23 +114,6 @@ export default function Checkout() {
 
   return (
     <div className='min-h-screen bg-background'>
-      {/* Breadcrumbs */}
-      {/* <div className='border-b'>
-        <div className='container mx-auto px-4 py-3'>
-          <nav className='flex items-center space-x-2 text-sm text-muted-foreground'>
-            <a href='/' className='hover:text-foreground transition-colors'>
-              Главная
-            </a>
-            <ChevronRight className='h-4 w-4' />
-            <a href='/cart' className='hover:text-foreground transition-colors'>
-              Корзина
-            </a>
-            <ChevronRight className='h-4 w-4' />
-            <span className='text-foreground'>Оформление заказа</span>
-          </nav>
-        </div>
-      </div> */}
-
       <div className='container mx-auto px-4 py-8'>
         <h1 className='text-3xl font-bold mb-8'>Оформление заказа</h1>
 
@@ -175,85 +158,7 @@ export default function Checkout() {
             <CheckoutForm />
             {/* Contact Information */}
 
-            {/* Delivery Method */}
-            <DeliveryOptions totalAmount={totalAmount} />
-
-            {/* Payment Method */}
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <CreditCard className='h-5 w-5' />
-                  Способ оплаты
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <RadioGroup
-                  value={formData.paymentMethod}
-                  onValueChange={(value) => handleInputChange('paymentMethod', value)}
-                >
-                  <div className='space-y-3'>
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='card' id='card' />
-                      <Label htmlFor='card' className='flex-1 cursor-pointer'>
-                        <div className='flex items-center gap-3'>
-                          <CreditCard className='h-5 w-5' />
-                          <div>
-                            <p className='font-medium'>Банковская карта</p>
-                            <p className='text-sm text-muted-foreground'>Visa, MasterCard, МИР</p>
-                          </div>
-                        </div>
-                      </Label>
-                    </div>
-
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='sbp' id='sbp' />
-                      <Label htmlFor='sbp' className='flex-1 cursor-pointer'>
-                        <div className='flex items-center gap-3'>
-                          <MapPin className='h-5 w-5' />
-                          <div>
-                            <p className='font-medium'>Система быстрых платежей</p>
-                            <p className='text-sm text-muted-foreground'>Оплата через СБП</p>
-                          </div>
-                        </div>
-                      </Label>
-                    </div>
-
-                    <div className='flex items-center space-x-2 p-4 border rounded-lg'>
-                      <RadioGroupItem value='cash' id='cash' />
-                      <Label htmlFor='cash' className='flex-1 cursor-pointer'>
-                        <div className='flex items-center gap-3'>
-                          <div className='h-5 w-5 rounded-full bg-green-500 flex items-center justify-center'>
-                            <span className='text-white text-xs'>₽</span>
-                          </div>
-                          <div>
-                            <p className='font-medium'>Наличными при получении</p>
-                            <p className='text-sm text-muted-foreground'>Только для доставки</p>
-                          </div>
-                        </div>
-                      </Label>
-                    </div>
-                  </div>
-                </RadioGroup>
-              </CardContent>
-            </Card>
-
             {/* Comment */}
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                  <MessageSquare className='h-5 w-5' />
-                  Комментарий к заказу
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={formData.comment}
-                  onChange={(e) => handleInputChange('comment', e.target.value)}
-                  placeholder='Дополнительные пожелания к заказу...'
-                  rows={3}
-                />
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right - Order Summary */}
