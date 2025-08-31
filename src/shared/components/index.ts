@@ -7,7 +7,7 @@ export { FormInput } from './form-input';
 export { CleareButton } from './cleare-button';
 export { ErrorText } from './error-text';
 export { RequiredSymbol } from './required-symbol';
-export { AuthModal } from './auth-modal';
+export { AuthModal } from './@modals/auth-modal';
 export { Login } from './login';
 export { Providers } from './providers';
 export { CatalogDrawer } from './catalog-drawer';
@@ -18,13 +18,13 @@ export { SearchInput } from './search';
 export { Spinner } from './spinner';
 export { LoadingBounce } from './loading-bounce';
 export { DeliveryOptions } from './delivery-options';
-export { AuthModalProvider } from './auth-modal-provider';
+export { AuthModalProvider } from './@modals/auth-modal-provider';
+export { OrderSummary } from './order-summary';
 
 export { AddressInput } from './address-input';
 
 export * from './forms';
 export * from './cart';
 export * from './book';
-export * from './checkout';
 
 export { ProfileButton } from './prifile-button';

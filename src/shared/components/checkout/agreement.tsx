@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Label } from '@/shared/components/ui';
+import { Checkbox } from '@/shared/components/ui';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props {

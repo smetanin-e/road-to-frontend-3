@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useAuthModalStore } from '../store/auth-modal';
+import { useAuthModalStore } from '../../store/auth-modal';
 import { AuthModal } from './auth-modal';
 
 interface Props {

@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { User, Truck, CreditCard, Shield, Clock, Check, AlertCircle } from 'lucide-react';
+import { CreditCard, Shield, Clock, AlertCircle } from 'lucide-react';
 
 import {
   Button,
@@ -11,11 +9,9 @@ import {
   CardHeader,
   CardTitle,
   Separator,
-  Label,
-  Checkbox,
 } from '@/shared/components/ui';
 
-import { ContactInformationForm, DeliveryOptions, Comment, Agreement } from '@/shared/components';
+import { DeliveryOptions, OrderSummary } from '@/shared/components';
 import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -23,15 +19,11 @@ import toast from 'react-hot-toast';
 import { useCartStore } from '@/shared/store/cart';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { checkoutFormSchema, CheckoutFormType } from '@/shared/schemas';
-
-interface OrderItem {
-  id: string;
-  title: string;
-  author: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import { useDeliveryPrice } from '@/shared/hooks';
+import { ContactInformationForm } from '@/shared/components/checkout/contact-information-form';
+import { Comment } from '@/shared/components/checkout/comment';
+import { OrderItems } from '@/shared/components/checkout/order-items';
+import { Agreement } from '@/shared/components/checkout/agreement';
 
 export interface CheckoutFormValues {
   firstName: string;
@@ -45,7 +37,8 @@ export interface CheckoutFormValues {
 
 export default function Checkout() {
   const { deliveryMethod } = useDeliveryStore();
-  const { items } = useCartStore();
+  const { totalAmount } = useCartStore();
+  const deliveryPrice = useDeliveryPrice(totalAmount, deliveryMethod);
   const form = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutFormSchema),
   });
@@ -63,101 +56,10 @@ export default function Checkout() {
     }
   };
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    city: '',
-    address: '',
-    apartment: '',
-    postalCode: '',
-    deliveryMethod: deliveryMethod,
-    deliveryTime: '',
-    paymentMethod: 'card',
-    comment: '',
-    saveData: false,
-    subscribe: false,
-    isGift: false,
-    recipientName: '',
-    giftMessage: '',
-  });
-
-  const orderItems: OrderItem[] = [
-    {
-      id: '1',
-      title: 'Мастер и Маргарита',
-      author: 'Михаил Булгаков',
-      price: 750,
-      quantity: 1,
-      image: '/placeholder.svg?height=80&width=60',
-    },
-    {
-      id: '2',
-      title: 'Белая гвардия',
-      author: 'Михаил Булгаков',
-      price: 650,
-      quantity: 2,
-      image: '/placeholder.svg?height=80&width=60',
-    },
-  ];
-
-  const subtotal = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const deliveryPrice =
-    formData.deliveryMethod === 'express' ? 500 : formData.deliveryMethod === 'pickup' ? 0 : 200;
-  const total = subtotal + deliveryPrice;
-
-  const steps = [
-    { id: 1, title: 'Контактные данные', icon: User },
-    { id: 2, title: 'Доставка', icon: Truck },
-    { id: 3, title: 'Оплата', icon: CreditCard },
-    { id: 4, title: 'Подтверждение', icon: Check },
-  ];
-
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
   return (
     <div className='min-h-screen bg-background'>
       <div className='container mx-auto px-4 py-8'>
         <h1 className='text-3xl font-bold mb-8'>Оформление заказа</h1>
-
-        {/* Progress Steps */}
-        <div className='mb-8'>
-          <div className='flex items-center justify-between'>
-            {steps.map((step, index) => (
-              <div key={step.id} className='flex items-center'>
-                <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                    currentStep >= step.id
-                      ? 'bg-primary border-primary text-primary-foreground'
-                      : 'border-muted-foreground text-muted-foreground'
-                  }`}
-                >
-                  <step.icon className='h-5 w-5' />
-                </div>
-                <div className='ml-3 hidden sm:block'>
-                  <p
-                    className={`text-sm font-medium ${
-                      currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'
-                    }`}
-                  >
-                    {step.title}
-                  </p>
-                </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`w-12 sm:w-24 h-0.5 mx-4 ${
-                      currentStep > step.id ? 'bg-primary' : 'bg-muted-foreground/30'
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
 
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -186,45 +88,11 @@ export default function Checkout() {
                       <CardTitle>Ваш заказ</CardTitle>
                     </CardHeader>
                     <CardContent className='space-y-4'>
-                      {items.map((item) => (
-                        <div key={item.id} className='flex gap-3'>
-                          <Image
-                            src={item.imageUrl || '/placeholder.svg'}
-                            alt={item.title}
-                            width={60}
-                            height={80}
-                            className='rounded border flex-shrink-0'
-                          />
-                          <div className='flex-1 min-w-0'>
-                            <h4 className='font-medium text-sm line-clamp-2'>{item.title}</h4>
-                            <p className='text-xs text-muted-foreground'>{item.author}</p>
-                            <div className='flex items-center justify-between mt-1'>
-                              <span className='text-sm'>{item.quantity} шт.</span>
-                              <span className='font-medium'>{item.price * item.quantity} ₽</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                      <OrderItems />
 
                       <Separator />
 
-                      <div className='space-y-2'>
-                        <div className='flex justify-between'>
-                          <span>Товары</span>
-                          <span>{subtotal} ₽</span>
-                        </div>
-                        <div className='flex justify-between'>
-                          <span>Доставка</span>
-                          <span>{deliveryPrice === 0 ? 'Бесплатно' : `${deliveryPrice} ₽`}</span>
-                        </div>
-                      </div>
-
-                      <Separator />
-
-                      <div className='flex justify-between text-lg font-bold'>
-                        <span>Итого</span>
-                        <span>{total} ₽</span>
-                      </div>
+                      <OrderSummary />
                     </CardContent>
                   </Card>
 
@@ -253,29 +121,16 @@ export default function Checkout() {
                     <CardContent className='p-4 space-y-4'>
                       <Agreement />
 
-                      <div className='flex items-center space-x-2'>
-                        <Checkbox
-                          id='subscribe'
-                          checked={formData.subscribe}
-                          onCheckedChange={(checked) =>
-                            handleInputChange('subscribe', checked as boolean)
-                          }
-                        />
-                        <Label htmlFor='subscribe' className='text-sm'>
-                          Подписаться на новости и акции
-                        </Label>
-                      </div>
-
                       <Button className='w-full' size='lg' type='submit'>
                         <CreditCard className='mr-2 h-4 w-4' />
-                        Оформить заказ на {total} ₽
+                        Оформить заказ на {deliveryPrice + totalAmount} ₽
                       </Button>
                     </CardContent>
                   </Card>
                 </div>
               </div>
             </div>
-          </form>{' '}
+          </form>
         </FormProvider>
       </div>
     </div>

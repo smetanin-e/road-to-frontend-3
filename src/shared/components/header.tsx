@@ -30,16 +30,11 @@ interface Props {
 export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) => {
   const user = useUserStore((state) => state.user);
 
-  const { items, getCartItems, totalQuantity } = useCartStore();
+  const { getCartItems, totalQuantity } = useCartStore();
 
   React.useEffect(() => {
     getCartItems();
   }, [getCartItems]);
-
-  const signOut = async () => {
-    await logout();
-    toast.success('Вы вышли из аккаунта');
-  };
 
   return (
     <header className='pt-8 pb-5 border-b'>
@@ -85,9 +80,15 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) =>
               </div>
             </Link>
 
-            {/* <ProfileButton name='Евгений Сметани' /> */}
+            {/*  */}
 
-            {user === null ? <Login /> : <Button onClick={signOut}>выход</Button>}
+            {/* <Button onClick={signOut}>выход</Button> */}
+
+            {user === null ? (
+              <Login />
+            ) : (
+              <ProfileButton name={`${user.firstName} ${user.lastName}`} />
+            )}
           </div>
         </div>
         {/* навигация */}

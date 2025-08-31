@@ -2,8 +2,6 @@
 import React from 'react';
 import { Label, RadioGroup, RadioGroupItem } from '@/shared/components/ui';
 import { useCartStore } from '../store/cart';
-import { useDeliveryStore } from '../store/delivery-method-store';
-import { useDeliveryPrice } from '../hooks';
 
 interface Props {
   className?: string;
@@ -13,10 +11,7 @@ interface Props {
 
 export const DeliveryMethod: React.FC<Props> = ({ value, onChange }) => {
   const { totalAmount } = useCartStore();
-  const { deliveryMethod } = useDeliveryStore();
   const freeDeliveryThreshold = 2000;
-
-  const deliveryPrice = useDeliveryPrice(totalAmount, freeDeliveryThreshold, deliveryMethod);
 
   const discount = totalAmount > freeDeliveryThreshold;
 

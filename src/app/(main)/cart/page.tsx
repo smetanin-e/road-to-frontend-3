@@ -15,36 +15,25 @@ import {
   Percent,
 } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { Badge } from '@/shared/components/ui/badge';
-import { Separator } from '@/shared/components/ui/separator';
-import { Input } from '@/shared/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
-import { Label } from '@/shared/components/ui/label';
-import { Progress } from '@/shared/components/ui/progress';
-import { CartDelivery, CartItems } from '@/shared/components';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Badge,
+  Input,
+  Progress,
+} from '@/shared/components/ui';
+
 import Link from 'next/link';
 import { useCartStore } from '@/shared/store/cart';
 import React from 'react';
-import { beforeDiscountPrice } from '@/shared/lib';
-import { useDeliveryPrice } from '@/shared/hooks';
-import { useDeliveryStore } from '@/shared/store/delivery-method-store';
-
-interface CartItem {
-  id: string;
-  title: string;
-  author: string;
-  price: number;
-  originalPrice: number;
-  quantity: number;
-  image: string;
-  inStock: boolean;
-}
+import { FREE_DELIVERY_THRESHOLD } from '@/shared/constants';
+import { CartDelivery, CartItems, OrderSummary } from '@/shared/components';
 
 export default function Cart() {
   const { items, totalQuantity, totalAmount, getCartItems } = useCartStore();
-  const { deliveryMethod } = useDeliveryStore();
 
   React.useEffect(() => {
     getCartItems();
@@ -52,23 +41,8 @@ export default function Cart() {
 
   const [promoCode, setPromoCode] = useState('');
 
-  const totalPriceWithoutDiscount = items.reduce(
-    (sum, item) =>
-      sum +
-      (item.sale
-        ? beforeDiscountPrice(item.price, item.sale) * item.quantity
-        : item.price * item.quantity),
-    0,
-  );
+  const progressToFreeDelivery = Math.min((totalAmount / FREE_DELIVERY_THRESHOLD) * 100, 100);
 
-  const savings = totalPriceWithoutDiscount - totalAmount;
-
-  const freeDeliveryThreshold = 2000;
-  const progressToFreeDelivery = Math.min((totalAmount / freeDeliveryThreshold) * 100, 100);
-  //const total = totalAmount + deliveryPrice;
-
-  const deliveryPrice = useDeliveryPrice(totalAmount, freeDeliveryThreshold, deliveryMethod);
-  const total = totalAmount + deliveryPrice;
   return (
     <div className='min-h-screen bg-background'>
       {/* Breadcrumbs */}
@@ -113,13 +87,13 @@ export default function Cart() {
             {/* Left - Cart Items */}
             <div className='lg:col-span-2 space-y-6'>
               {/* Progress to Free Delivery */}
-              {totalAmount < freeDeliveryThreshold && (
+              {totalAmount < FREE_DELIVERY_THRESHOLD && (
                 <Card>
                   <CardContent className='p-4'>
                     <div className='flex items-center gap-2 mb-2'>
                       <Truck className='h-4 w-4 text-green-600' />
                       <span className='text-sm font-medium'>
-                        До бесплатной доставки осталось {freeDeliveryThreshold - totalAmount} ₽
+                        До бесплатной доставки осталось {FREE_DELIVERY_THRESHOLD - totalAmount} ₽
                       </span>
                     </div>
                     <Progress value={progressToFreeDelivery} className='h-2' />
@@ -218,33 +192,8 @@ export default function Cart() {
                     <CardTitle>Итого</CardTitle>
                   </CardHeader>
                   <CardContent className='space-y-4'>
-                    <div className='space-y-2'>
-                      <div className='flex justify-between'>
-                        <span>Товары ({totalQuantity} шт.)</span>
-                        <span>{totalAmount} ₽</span>
-                      </div>
-                      {savings > 0 && (
-                        <div className='flex justify-between text-green-600'>
-                          <span>Скидка</span>
-                          <span>-{savings} ₽</span>
-                        </div>
-                      )}
-                      <div className='flex justify-between'>
-                        <span>Доставка</span>
-                        {deliveryPrice === 0 ? (
-                          <span className='font-medium text-green-600'>Бесплатно</span>
-                        ) : (
-                          <span>{deliveryPrice} ₽</span>
-                        )}
-                      </div>
-                    </div>
+                    <OrderSummary />
 
-                    <Separator />
-
-                    <div className='flex justify-between text-lg font-bold'>
-                      <span>К оплате</span>
-                      <span>{total} ₽</span>
-                    </div>
                     <Link href={'/checkout'}>
                       <Button className='w-full' size='lg'>
                         <CreditCard className='mr-2 h-4 w-4' />

@@ -1,13 +1,10 @@
+import { FREE_DELIVERY_THRESHOLD } from '../constants';
 import { DeliveryMethodType } from '../store/delivery-method-store';
 
-export const useDeliveryPrice = (
-  totalAmount: number,
-  freeDeliveryThreshold: number,
-  deliveryMethod: DeliveryMethodType,
-) => {
+export const useDeliveryPrice = (totalAmount: number, deliveryMethod: DeliveryMethodType) => {
   const deliveryPrices: Record<DeliveryMethodType, number> = {
-    express: totalAmount > freeDeliveryThreshold ? 250 : 500,
-    standard: totalAmount > freeDeliveryThreshold ? 0 : 200,
+    express: totalAmount > FREE_DELIVERY_THRESHOLD ? 250 : 500,
+    standard: totalAmount > FREE_DELIVERY_THRESHOLD ? 0 : 200,
     pickup: 0,
   };
 
