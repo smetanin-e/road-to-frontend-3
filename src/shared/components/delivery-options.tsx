@@ -2,7 +2,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui';
 import { Truck } from 'lucide-react';
-import { useCartStore } from '@/shared/store/cart';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { useDeliveryStore } from '../store/delivery-method-store';
@@ -14,8 +13,6 @@ interface Props {
 
 export const DeliveryOptions: React.FC<Props> = () => {
   const { deliveryMethod } = useDeliveryStore();
-  const { totalAmount } = useCartStore();
-  const freeDeliveryThreshold = 2000;
 
   const { control } = useFormContext();
 

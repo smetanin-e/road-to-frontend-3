@@ -9,6 +9,7 @@ export { ErrorText } from './error-text';
 export { RequiredSymbol } from './required-symbol';
 export { AuthModal } from './@modals/auth-modal';
 export { Login } from './login';
+export { Logout } from './logout';
 export { Providers } from './providers';
 export { CatalogDrawer } from './catalog-drawer';
 export { CatalogItem } from './catalog-item';

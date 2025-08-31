@@ -5,29 +5,22 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/shared/components/ui';
 import { stringToColor } from '@/shared/lib';
-import toast from 'react-hot-toast';
-import { logout } from '../services';
-import { LogoutModal } from './@modals';
+
+import { useAuthModalStore } from '../store/auth-modal';
 interface Props {
   className?: string;
   name: string;
 }
 
 export const ProfileButton: React.FC<Props> = ({ name }) => {
-  const [open, setOpen] = React.useState(false);
-  const closePopup = () => {
-    setOpen(false);
-  };
+  const { onOpen } = useAuthModalStore();
+
+  //!ОПТИМИЗИРОВАТЬ
   const initials = name
     .split(' ')
     .map((n) => n[0])
@@ -54,12 +47,11 @@ export const ProfileButton: React.FC<Props> = ({ name }) => {
           </div>
         </PopoverTrigger>
         <PopoverContent align='end' className='px-6'>
-          <span onClick={() => setOpen(true)} className='cursor-pointer text-right block'>
+          <span onClick={() => onOpen('logout')} className='cursor-pointer text-right block'>
             Выход
           </span>
         </PopoverContent>
       </Popover>
-      <LogoutModal open={open} closePopup={closePopup} />
     </div>
   );
 };

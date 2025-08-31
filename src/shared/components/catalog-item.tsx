@@ -17,7 +17,7 @@ interface CategoryItemProps {
   category: CatalogDTO;
 }
 
-export function CatalogItem({ category }: CategoryItemProps) {
+export const CatalogItem: React.FC<CategoryItemProps> = ({ category }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -91,4 +91,4 @@ export function CatalogItem({ category }: CategoryItemProps) {
       </Collapsible>
     </div>
   );
-}
+};

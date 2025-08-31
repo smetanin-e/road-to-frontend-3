@@ -1,16 +1,9 @@
 'use client';
 
 import {
-  Badge,
-  Button,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -21,27 +14,13 @@ import { CatalogItem } from './catalog-item';
 import { useCategoriesStore } from '@/shared/store/categories';
 import { useEffect } from 'react';
 
-interface Category {
-  id: string;
-  name: string;
-  icon: React.ReactNode;
-  count: number;
-  subcategories?: Subcategory[];
-}
-
-interface Subcategory {
-  id: string;
-  name: string;
-  count: number;
-}
-
 interface CategoriesSheetProps {
   trigger?: React.ReactNode;
   onCategorySelect?: (categoryId: number, subcategoryId?: number) => void;
   children: React.ReactNode;
 }
 
-export function CatalogDrawer({ children }: CategoriesSheetProps) {
+export const CatalogDrawer: React.FC<CategoriesSheetProps> = ({ children }) => {
   const { categories, getAllCategories } = useCategoriesStore();
 
   useEffect(() => {
@@ -79,4 +58,4 @@ export function CatalogDrawer({ children }: CategoriesSheetProps) {
       </SheetContent>
     </Sheet>
   );
-}
+};

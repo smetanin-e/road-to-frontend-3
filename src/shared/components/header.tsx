@@ -1,22 +1,13 @@
 'use client';
 import React from 'react';
 
-import toast from 'react-hot-toast';
-import { Heart, ShoppingCart, Menu } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { logout } from '@/shared/services';
-import {
-  CatalogDrawer,
-  Container,
-  HeaderMenu,
-  Login,
-  ProfileButton,
-  SearchInput,
-} from '@/shared/components';
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input } from '@/shared/components/ui';
+import { Container, HeaderMenu, Login, ProfileButton, SearchInput } from '@/shared/components';
+import { Badge } from '@/shared/components/ui';
 
 import { useUserStore } from '@/shared/store/user';
 import { useCartStore } from '../store/cart';
@@ -79,10 +70,6 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) =>
                 <span>Избранное</span>
               </div>
             </Link>
-
-            {/*  */}
-
-            {/* <Button onClick={signOut}>выход</Button> */}
 
             {user === null ? (
               <Login />
