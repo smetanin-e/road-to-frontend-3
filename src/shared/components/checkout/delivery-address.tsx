@@ -10,6 +10,7 @@ interface Props {
 
 export const DeliveryAddress: React.FC<Props> = () => {
   const { control } = useFormContext();
+
   return (
     <Card>
       <CardHeader>
@@ -29,7 +30,7 @@ export const DeliveryAddress: React.FC<Props> = () => {
 
               {fieldState.error && (
                 <p className='absolute pt-1 text-[12px] text-destructive pl-2'>
-                  {fieldState.error.message}
+                  Введите корректный адресс
                 </p>
               )}
             </div>

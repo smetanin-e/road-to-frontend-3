@@ -15,12 +15,14 @@ import {
   Checkbox,
 } from '@/shared/components/ui';
 
-import { ContactInformationForm, DeliveryOptions, Comment } from '@/shared/components';
+import { ContactInformationForm, DeliveryOptions, Comment, Agreement } from '@/shared/components';
 import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useCartStore } from '@/shared/store/cart';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { checkoutFormSchema, CheckoutFormType } from '@/shared/schemas';
 
 interface OrderItem {
   id: string;
@@ -44,7 +46,9 @@ export interface CheckoutFormValues {
 export default function Checkout() {
   const { deliveryMethod } = useDeliveryStore();
   const { items } = useCartStore();
-  const form = useForm<CheckoutFormValues>();
+  const form = useForm<CheckoutFormType>({
+    resolver: zodResolver(checkoutFormSchema),
+  });
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
@@ -247,19 +251,7 @@ export default function Checkout() {
                   {/* Agreement and Submit */}
                   <Card>
                     <CardContent className='p-4 space-y-4'>
-                      <div className='flex items-start space-x-2'>
-                        <Checkbox id='agreement' />
-                        <Label htmlFor='agreement' className='text-sm leading-relaxed'>
-                          Я согласен с{' '}
-                          <a href='#' className='text-primary hover:underline'>
-                            условиями использования
-                          </a>{' '}
-                          и{' '}
-                          <a href='#' className='text-primary hover:underline'>
-                            политикой конфиденциальности
-                          </a>
-                        </Label>
-                      </div>
+                      <Agreement />
 
                       <div className='flex items-center space-x-2'>
                         <Checkbox

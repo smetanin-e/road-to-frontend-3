@@ -1,8 +1,9 @@
-import { z } from "zod";
-import { passwordSchema } from "./password-schema";
+import { z } from 'zod';
+import { passwordSchema } from './password-schema';
+import { emailSchema } from './email-schema';
 export const loginFormSchema = z.object({
-  email: z.email(),
-  password: passwordSchema, //.regex(/[A-Za-z]/, { message: "Пароль должен содержать хотя бы одну букву" })                                                                                         // .regex(/\d/, { message: "Пароль должен содержать хотя бы одну цифру" }),
+  email: emailSchema,
+  password: passwordSchema,
 });
 
 export type LoginFormType = z.infer<typeof loginFormSchema>;
