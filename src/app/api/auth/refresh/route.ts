@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     });
     return response;
   } catch (error) {
-    console.error('Ошибка при обновлении access token:', error);
+    //console.error('Ошибка при обновлении access token:', error);
     return NextResponse.json({ error: (error as Error).message }, { status: 401 });
   }
 }

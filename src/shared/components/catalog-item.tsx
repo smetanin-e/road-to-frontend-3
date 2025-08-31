@@ -29,7 +29,7 @@ export const CatalogItem: React.FC<CategoryItemProps> = ({ category }) => {
               <Button
                 variant='ghost'
                 // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
-                className=' flex items-center gap-3 flex-1 text-left hover:text-blue-600 hover:bg-transparent transition-colors'
+                className=' flex items-center gap-3 flex-1 text-left hover:text-primary hover:bg-transparent transition-colors'
               >
                 {/* {category.icon} */}
                 <LibraryBig />
@@ -70,7 +70,7 @@ export const CatalogItem: React.FC<CategoryItemProps> = ({ category }) => {
                           <Button
                             variant='ghost'
                             // ! ИСПРАВИТЬ СИНИЙ ЦВЕТ ПРИ НАВЕДЕНИИ
-                            className='flex items-center justify-between w-full py-2 px-3 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors'
+                            className='flex items-center justify-between w-full py-2 px-3 text-s hover:text-primary hover:bg-transparent rounded-md transition-colors'
                           >
                             <div className='flex items-center gap-5'>
                               <BookOpenCheck />

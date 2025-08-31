@@ -84,11 +84,12 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
                   href={`/product/${product.id}`}
                 >
                   <Image
-                    className='rounded-sm h-8 w-8'
+                    className='rounded-sm'
                     src={product.images[0].url}
                     alt={product.title}
-                    width={8}
-                    height={8}
+                    width={32}
+                    height={32}
+                    priority
                   />
                   <span>{product.title}</span>
                 </Link>

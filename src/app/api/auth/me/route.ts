@@ -26,11 +26,11 @@ export async function GET(req: NextRequest) {
     });
 
     if (!user) {
-      throw new Error('Пользователь не авторизован');
+      return NextResponse.json({ error: 'Пользователь не авторизован' }, { status: 401 });
     }
     return NextResponse.json(user);
   } catch (error) {
-    console.error('Ошибка при обновлении access token:', error);
+    // console.error('Ошибка при обновлении access token:', error);
     return NextResponse.json({ error: (error as Error).message }, { status: 401 });
   }
 }

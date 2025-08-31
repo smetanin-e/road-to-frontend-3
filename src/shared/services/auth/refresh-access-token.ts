@@ -24,7 +24,7 @@ export async function refreshAccessToken(): Promise<User | false> {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       // Если 401 — значит токен невалиден или нет пользователя — возвращаем false
-      console.warn('Refresh token невалиден или отсутствует');
+      //console.warn('Refresh token невалиден или отсутствует');
       return false;
     }
     console.error('Ошибка в refreshAccessToken:', error);

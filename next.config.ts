@@ -2,15 +2,30 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      'cv8.litres.ru', // <- текущий источник
-      'example.com', // <- добавляй другие нужные хосты
-      'another-host.com',
-    ],
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'cv8.litres.ru',
+        port: '',
+        pathname: '/**', // любые пути
+      },
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'another-host.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
       },
     ],
   },

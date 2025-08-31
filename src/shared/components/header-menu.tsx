@@ -30,7 +30,7 @@ export const HeaderMenu: React.FC<Props> = () => {
           <Link
             href={`/products/${tag.slug}`}
             key={tag.id}
-            className='cursor-pointer hover:text-teal-600'
+            className='cursor-pointer hover:text-primary'
           >
             {tag.name}
           </Link>

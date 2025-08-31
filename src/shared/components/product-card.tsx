@@ -38,6 +38,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
               width={200}
               height={320}
               className='w-full h-80 object-cover cursor-pointer'
+              priority
             />
           </Link>
 
@@ -50,7 +51,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
           <Button
             size='icon'
             variant='ghost'
-            className='absolute top-3 right-3 bg-white/80 hover:bg-white hover:text-red-500 transition-colors'
+            className='absolute top-3 right-3 bg-gradient-to-br from-ring to--chart-1 transition-colors'
           >
             <Heart className='h-4 w-4' />
             <span className='sr-only'>Добавить в избранное</span>

@@ -13,7 +13,7 @@ export const Login: React.FC<Props> = () => {
     <div>
       <div
         onClick={() => onOpen('login')}
-        className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg cursor-pointer'
+        className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-ring hover:to--chart-1 rounded-xl p-3 -m-3 hover:shadow-lg cursor-pointer'
       >
         <User className='h-8 w-8' />
         <span>Вход</span>

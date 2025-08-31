@@ -46,7 +46,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) =>
           {hasSearch && <SearchInput />}
           <div className='flex gap-9 items-end'>
             <Link href={'/cart'}>
-              <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
+              <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-ring hover:to--chart-1 rounded-xl p-3 -m-3 hover:shadow-lg'>
                 <div className='relative'>
                   {totalQuantity > 0 && (
                     <Badge className='rounded-full absolute top-0 right-0 translate-x-[90%] translate-y-[-50%] transition-transform duration-300 group-hover:translate-y-[-70%]'>
@@ -60,7 +60,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) =>
               </div>
             </Link>
             <Link href={'/'}>
-              <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-red-50 hover:to-pink-50 rounded-xl p-3 -m-3 hover:shadow-lg'>
+              <div className='flex flex-col items-center gap-1 group transition-all duration-200 hover:bg-gradient-to-br hover:from-ring hover:to--chart-1 rounded-xl p-3 -m-3 hover:shadow-lg'>
                 <div className='relative'>
                   <Badge className='rounded-full absolute top-0 right-0 translate-x-[90%] translate-y-[-50%] transition-transform duration-300 group-hover:translate-y-[-70%]'>
                     99+
