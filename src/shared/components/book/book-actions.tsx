@@ -3,7 +3,6 @@ import React from 'react';
 import { Heart, Share2, ShoppingCart, Truck, Shield, RotateCcw } from 'lucide-react';
 
 import { Badge, Button, Card, CardContent, Separator } from '@/shared/components/ui';
-import { beforeDiscountPrice } from '@/shared/lib';
 import { useCartStore } from '@/shared/store/cart';
 import Link from 'next/link';
 import { Spinner } from '../spinner';
@@ -11,15 +10,14 @@ import { Spinner } from '../spinner';
 interface Props {
   className?: string;
   price: number;
-  sale?: number;
   bookId: number;
+  oldPrice?: number | null;
 }
 
-export const BookActions: React.FC<Props> = ({ price, sale, bookId }) => {
+export const BookActions: React.FC<Props> = ({ price, bookId, oldPrice }) => {
   const [loading, setLoading] = React.useState(false);
   const { items, addCartItem } = useCartStore();
   const itemInCart = items.some((item) => item.bookId === bookId);
-  const priceWithoutDiscont = sale ? beforeDiscountPrice(price, sale) : 0;
 
   const handleAddToCart = async () => {
     try {
@@ -39,15 +37,13 @@ export const BookActions: React.FC<Props> = ({ price, sale, bookId }) => {
             <div className='space-y-2'>
               <div className='flex items-center gap-2'>
                 <span className='text-3xl font-bold text-primary'>{price} ₽</span>
-                {priceWithoutDiscont ? (
-                  <span className='text-lg text-muted-foreground line-through'>
-                    {priceWithoutDiscont} ₽
-                  </span>
-                ) : null}
+                {oldPrice && (
+                  <span className='text-lg text-muted-foreground line-through'>{oldPrice} ₽</span>
+                )}
               </div>
-              {priceWithoutDiscont ? (
+              {oldPrice && oldPrice > price ? (
                 <Badge variant='secondary' className='text-green-600'>
-                  Экономия {priceWithoutDiscont - price} ₽
+                  Экономия {oldPrice - price} ₽
                 </Badge>
               ) : null}
             </div>

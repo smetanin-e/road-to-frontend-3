@@ -21,7 +21,7 @@ export async function GET(req: Request, context: { params: Promise<{ slug: strin
           id: true,
           title: true,
           price: true,
-          sale: true,
+          oldPrice: true,
           images: {
             where: { order: 0 },
             select: { url: true },
@@ -52,7 +52,7 @@ export async function GET(req: Request, context: { params: Promise<{ slug: strin
           id: true,
           title: true,
           price: true,
-          sale: true,
+          oldPrice: true,
           images: {
             where: { order: 0 },
             select: { url: true },
@@ -83,7 +83,7 @@ export async function GET(req: Request, context: { params: Promise<{ slug: strin
           id: true,
           title: true,
           price: true,
-          sale: true,
+          oldPrice: true,
           images: {
             where: { order: 0 },
             select: { url: true },

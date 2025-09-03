@@ -1,17 +1,16 @@
+import { DeliveryStatus } from '@prisma/client';
 import { create } from 'zustand';
 
-export type DeliveryMethodType = 'express' | 'standard' | 'pickup';
-
 interface State {
-  deliveryMethod: DeliveryMethodType;
-  setDeliveryMethod: (method: DeliveryMethodType) => void;
+  deliveryMethod: DeliveryStatus;
+  setDeliveryMethod: (method: DeliveryStatus) => void;
 
   deliveryPrice: number;
   setDeliveryPrice: (price: number) => void;
 }
 
 export const useDeliveryStore = create<State>()((set) => ({
-  deliveryMethod: 'standard',
+  deliveryMethod: 'STANDART',
   setDeliveryMethod: (method) => {
     set({ deliveryMethod: method });
   },

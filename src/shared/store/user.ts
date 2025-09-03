@@ -8,6 +8,7 @@ type User = {
   role: string;
   firstName: string;
   lastName: string;
+  phone: string;
 } | null;
 
 interface UserState {

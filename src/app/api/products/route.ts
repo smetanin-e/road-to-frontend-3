@@ -16,7 +16,7 @@ export async function GET(req: Request) {
           id: true,
           title: true,
           price: true,
-          sale: true,
+          oldPrice: true,
           images: {
             where: { order: 0 },
             select: { url: true },

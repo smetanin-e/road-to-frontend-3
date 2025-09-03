@@ -2,7 +2,7 @@ export type BookDTO = {
   id: number;
   title: string;
   price: number;
-  sale: number | null;
+  oldPrice: number | null;
   images: {
     url: string;
   }[];

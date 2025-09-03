@@ -44,7 +44,7 @@ export const books = [
     imageUrl: '',
     description: '',
     price: '',
-    sale: '',
+    oldPrice: '',
 
     author: '',
 

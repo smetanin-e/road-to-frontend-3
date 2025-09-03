@@ -6,7 +6,6 @@ import { BookDTO } from '../services/dto/products.dto';
 import { useCartStore } from '../store/cart';
 import React from 'react';
 import { Spinner } from '@/shared/components/';
-import { beforeDiscountPrice } from '@/shared/lib';
 import Link from 'next/link';
 interface Props {
   className?: string;
@@ -42,9 +41,9 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
             />
           </Link>
 
-          {book.sale && (
+          {book.oldPrice && book.oldPrice > book.price && (
             <Badge className='absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white'>
-              {book.sale} %
+              {Math.round(((book.oldPrice - book.price) / book.oldPrice) * 100)} %
             </Badge>
           )}
 
@@ -69,9 +68,10 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
 
           <div className='flex items-center gap-2 mt-auto'>
             <span className='text-2xl font-bold text-primary'>{book.price} ₽</span>
-            {book.sale && (
+
+            {book.oldPrice && book.oldPrice > book.price && (
               <span className='text-sm text-muted-foreground line-through'>
-                {beforeDiscountPrice(book.price, book.sale)} ₽
+                {book.oldPrice + book.price} ₽
               </span>
             )}
           </div>

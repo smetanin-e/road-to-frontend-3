@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ hasSearch = true, hasMenu = true }) => {
-  const user = useUserStore((state) => state.user);
+  const { user } = useUserStore();
 
   const { getCartItems, totalQuantity } = useCartStore();
 

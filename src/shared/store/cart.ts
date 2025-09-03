@@ -12,7 +12,7 @@ export type CartItemState = {
   author: string;
   price: number;
   totalPrice: number;
-  sale?: number | null;
+  oldPrice?: number | null;
 };
 
 const defaultState = {

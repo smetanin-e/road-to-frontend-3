@@ -199,7 +199,7 @@ async function generateData() {
             title,
             description: `Описание книги "${title}".`,
             price: randomInt(200, 1000),
-            sale: Math.random() > 0.5 ? randomInt(5, 30) : null,
+            oldPrice: Math.random() > 0.5 ? randomInt(420, 1200) : null,
             categoryId: randomInt(1, 5),
             subcategoryId: randomInt(1, 18),
             tags: {

@@ -1,17 +1,10 @@
 'use client';
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Label,
-  RadioGroup,
-  RadioGroupItem,
-} from '@/shared/components/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui';
 import { Truck } from 'lucide-react';
 import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 import { DeliveryMethod } from '../delivery-method';
+import { DeliveryStatus } from '@prisma/client';
 
 interface Props {
   className?: string;
@@ -20,7 +13,11 @@ export const CartDelivery: React.FC<Props> = () => {
   const { deliveryMethod, setDeliveryMethod } = useDeliveryStore();
 
   const handleChange = (value: string) => {
-    if (value === 'express' || value === 'standard' || value === 'pickup') {
+    if (
+      value === DeliveryStatus.EXPRESS ||
+      value === DeliveryStatus.STANDART ||
+      value === DeliveryStatus.PICKUP
+    ) {
       setDeliveryMethod(value);
     }
   };

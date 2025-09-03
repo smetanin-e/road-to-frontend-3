@@ -29,11 +29,18 @@ export const updateCartDetails = async (token: string) => {
     return acc + item.quantity;
   }, 0);
 
+  const totalSale = userCart.cartItems.reduce((acc, item) => {
+    return item.book && item.book.oldPrice && item.book.price < item.book.oldPrice
+      ? item.book.oldPrice - item.book.price + acc
+      : 0 + acc;
+  }, 0);
+
   return await prisma.cart.update({
     where: { id: userCart.id },
     data: {
       totalAmount,
       totalQuantity,
+      totalSale,
     },
     include: {
       cartItems: {
@@ -46,7 +53,7 @@ export const updateCartDetails = async (token: string) => {
               id: true,
               title: true,
               price: true,
-              sale: true,
+              oldPrice: true,
               images: {
                 where: { order: 0 },
                 select: { url: true },

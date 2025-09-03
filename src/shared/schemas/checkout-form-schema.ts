@@ -3,8 +3,8 @@ import { personalUserSchema } from './personal-user-schema';
 
 export const checkoutFormSchema = z.object({
   ...personalUserSchema.shape,
-  deliveryType: z.enum<readonly ['standard', 'express', 'pickup']>(
-    ['standard', 'express', 'pickup'],
+  deliveryType: z.enum<readonly ['STANDART', 'EXPRESS', 'PICKUP']>(
+    ['STANDART', 'EXPRESS', 'PICKUP'],
     { message: 'Нужно выбрать способ доставки' },
   ),
   address: z.string().optional(),

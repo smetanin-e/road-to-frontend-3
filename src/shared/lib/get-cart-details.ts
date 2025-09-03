@@ -5,6 +5,7 @@ interface ReturnProps {
   items: CartItemState[];
   totalAmount: number;
   totalQuantity: number;
+  totalSale: number;
 }
 
 export const getCartDetails = (data: CartDTO): ReturnProps => {
@@ -17,10 +18,15 @@ export const getCartDetails = (data: CartDTO): ReturnProps => {
       imageUrl: item.book.images?.[0]?.url ?? '/default-book.png',
       author: item.book.author?.name ?? 'Неизвестный автор',
       price: item.book.price,
+      oldPrice: item.book?.oldPrice,
       totalPrice: item.book.price * item.quantity,
-      sale: item.book.sale,
     }));
-    return { totalAmount: data.totalAmount, totalQuantity: data.totalQuantity, items };
+    return {
+      totalAmount: data.totalAmount,
+      totalQuantity: data.totalQuantity,
+      totalSale: data.totalSale,
+      items,
+    };
   }
-  return { totalAmount: 0, totalQuantity: 0, items: [] };
+  return { totalAmount: 0, totalQuantity: 0, totalSale: 0, items: [] };
 };

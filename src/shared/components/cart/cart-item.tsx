@@ -61,6 +61,7 @@ export const CartItem: React.FC<Props> = ({ item }) => {
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <span className='font-bold text-lg'>{item.price} ₽</span>
+              {/* //!ПЕРЕДЕЛАТЬ */}
               {item.sale && (
                 <span className='text-sm text-muted-foreground line-through'>
                   {beforeDiscountPrice(item.price, item.sale)} ₽

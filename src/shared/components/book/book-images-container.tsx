@@ -7,9 +7,10 @@ import { cn } from '@/shared/lib';
 interface Props {
   className?: string;
   images: BookImage[];
+  sale: number;
 }
 
-export const BookImagesContainer: React.FC<Props> = ({ images }) => {
+export const BookImagesContainer: React.FC<Props> = ({ images, sale }) => {
   const [mainImage, setMainImage] = React.useState(images[0].url);
   return (
     <div className='lg:col-span-4'>
@@ -22,7 +23,9 @@ export const BookImagesContainer: React.FC<Props> = ({ images }) => {
             height={600}
             className='w-full rounded-lg shadow-lg'
           />
-          <Badge className='absolute top-4 left-4 bg-red-500 text-white'>-25%</Badge>
+          {sale ? (
+            <Badge className='absolute top-4 left-4 bg-red-500 text-white'>{`-${sale}%`}</Badge>
+          ) : null}
         </div>
 
         {/* Thumbnail Gallery */}

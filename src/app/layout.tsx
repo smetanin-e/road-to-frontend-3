@@ -22,7 +22,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ru' className='dark'>
+    <html lang='ru' className=''>
       <head>
         <link data-rh='true' rel='icon' href='/logo.png' />
       </head>

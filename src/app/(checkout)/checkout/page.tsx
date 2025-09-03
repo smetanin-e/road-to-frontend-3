@@ -24,23 +24,32 @@ import { ContactInformationForm } from '@/shared/components/checkout/contact-inf
 import { Comment } from '@/shared/components/checkout/comment';
 import { OrderItems } from '@/shared/components/checkout/order-items';
 import { Agreement } from '@/shared/components/checkout/agreement';
+import { useUserStore } from '@/shared/store/user';
+import { DeliveryStatus } from '@prisma/client';
 
 export interface CheckoutFormValues {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
-  deliveryType: 'standard' | 'express' | 'pickup';
+  deliveryType: DeliveryStatus;
   address?: string;
   comment?: string;
 }
 
 export default function Checkout() {
+  const { user } = useUserStore();
   const { deliveryMethod } = useDeliveryStore();
   const { totalAmount } = useCartStore();
   const deliveryPrice = useDeliveryPrice(totalAmount, deliveryMethod);
   const form = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutFormSchema),
+    defaultValues: {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      phone: user?.phone,
+    },
   });
 
   const onSubmit = async (data: CheckoutFormValues) => {
@@ -73,7 +82,7 @@ export default function Checkout() {
                 <DeliveryOptions />
 
                 {/* Delivery Address */}
-                {form.watch('deliveryType') !== 'pickup' && <DeliveryAddress />}
+                {form.watch('deliveryType') !== 'PICKUP' && <DeliveryAddress />}
 
                 {/* Comment */}
                 <Comment />

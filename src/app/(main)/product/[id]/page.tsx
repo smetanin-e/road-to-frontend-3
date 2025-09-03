@@ -17,7 +17,7 @@ import {
   Progress,
 } from '@/shared/components/ui';
 
-import { prisma } from '@/shared/lib';
+import { prisma, salePercent } from '@/shared/lib';
 import {
   AuthorInfo,
   BookActions,
@@ -56,7 +56,10 @@ export default async function Product({ params }: { params: Promise<{ id: number
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12'>
           {/* Left - Images */}
           {/*//!СДЕЛАТЬ ПУСТУЮ КАРТИНКУ, ЕСЛИ НЕ БУДЕТ ИЗОБРАЖЕНИЙ  */}
-          <BookImagesContainer images={book?.images} />
+          <BookImagesContainer
+            images={book?.images}
+            sale={salePercent(book.oldPrice, book.price)}
+          />
 
           {/* Center - Description and Details */}
           <div className='lg:col-span-5'>
@@ -113,7 +116,7 @@ export default async function Product({ params }: { params: Promise<{ id: number
           </div>
 
           {/* Right - Purchase Block */}
-          <BookActions bookId={book.id} price={book?.price} sale={book.sale ? book.sale : 0} />
+          <BookActions bookId={book.id} price={book?.price} oldPrice={book?.oldPrice} />
         </div>
 
         {/* Reviews Section */}

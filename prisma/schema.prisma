@@ -73,8 +73,8 @@ model Book {
     title       String
     description String
 
-    price Int
-    sale  Int?
+    price    Int
+    oldPrice Int?
 
     //rating      Rating?
 
@@ -132,6 +132,7 @@ model Cart {
 
     totalAmount   Int @default(0)
     totalQuantity Int @default(0)
+    totalSale     Int @default(0)
 
     user   User?   @relation(fields: [userId], references: [id])
     userId String? @unique
@@ -163,17 +164,21 @@ model Order {
     userId String? @unique
     user   User?   @relation(fields: [userId], references: [id])
 
-    totalAmount Int
-    status      OrderStatus
-    paymentId   String?
+    status    OrderStatus @default(PENDING)
+    paymentId String?
 
-    items Json
+    deliveryType DeliveryStatus
+    items        Json
 
     fullname String
     email    String
     phone    String
     address  String
     comment  String
+
+    itemsAmount   Int
+    deliveryPrice Int
+    totalAmount   Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -183,4 +188,10 @@ enum OrderStatus {
     PENDING
     SUCCEEDED
     CANCELED
+}
+
+enum DeliveryStatus {
+    STANDART
+    EXPRESS
+    PICKUP
 }

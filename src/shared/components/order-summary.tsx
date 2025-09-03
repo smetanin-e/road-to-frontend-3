@@ -13,7 +13,7 @@ export const OrderSummary: React.FC<Props> = () => {
   const { deliveryMethod } = useDeliveryStore();
   const { items, totalQuantity, totalAmount } = useCartStore();
   const deliveryPrice = useDeliveryPrice(totalAmount, deliveryMethod);
-
+  //!ПЕРЕДЕЛАТЬ
   const totalPriceWithoutDiscount = items.reduce(
     (sum, item) =>
       sum +
