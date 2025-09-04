@@ -2,7 +2,7 @@ import { prisma } from '@/shared/lib';
 import { getUserFromAccessToken } from '@/shared/services';
 import { OrderStatus } from '@prisma/client';
 import { cookies } from 'next/headers';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,38 +10,42 @@ export async function POST(req: NextRequest) {
 
     const cookieStore = cookies();
     const token = (await cookieStore).get('access_token')?.value;
+    console.log('TOOOOOOOOOOOOOKEN=', token);
     if (!token) {
-      throw new Error('user token found');
+      return NextResponse.json({ message: 'Токен не найден' }, { status: 500 }); //разобраться со статусами
     }
 
     const user = await getUserFromAccessToken(token);
+    console.log('USSSSSSSSSSSSER=', user);
     if (!user) {
-      throw new Error('user not found');
+      return NextResponse.json({ message: 'Не удалось найти пользователя' }, { status: 500 }); //разобраться со статусами
     }
     const cart = await prisma.cart.findFirst({
       where: { userId: user.id },
-      include: { cartItems: true },
+      include: {
+        cartItems: { include: { book: { select: { price: true, title: true, images: true } } } },
+      },
     });
 
     if (!cart) {
-      throw new Error('cart not found');
+      return NextResponse.json({ message: 'Корзина не найдена' }, { status: 500 }); //разобраться со статусами
     }
     if (cart?.totalAmount === 0) {
-      throw new Error('cart is empty');
+      return NextResponse.json({ message: 'В корзине нет товаров' }, { status: 500 }); //разобраться со статусами
     }
 
     const order = await prisma.order.create({
       data: {
-        userId: user.id,
+        user: { connect: { id: user.id } },
         fullname: data.firstName + ' ' + data.lastName,
         email: data.email,
         phone: data.phone,
-        address: data.address,
-        comment: data.comment,
+        address: data.address ? data.address : null,
+        comment: data.comment ? data.comment : 'Нет комментария',
         deliveryType: data.deliveryType,
-        deliveryPrice: 0,
+        deliveryPrice: data.deliveryPrice,
         itemsAmount: cart.totalAmount,
-        totalAmount: cart.totalAmount,
+        totalAmount: cart.totalAmount + data.deliveryPrice,
         status: OrderStatus.PENDING,
         items: JSON.stringify(cart.cartItems),
       },
@@ -58,6 +62,8 @@ export async function POST(req: NextRequest) {
     await prisma.cartItem.deleteMany({
       where: { cartId: cart.id },
     });
+
+    return NextResponse.json(order);
   } catch (error) {
     console.error('[API_ORDERS] Server error', error);
   }

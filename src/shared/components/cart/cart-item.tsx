@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { CartItemState, useCartStore } from '@/shared/store/cart';
 import { QuantityControls } from './quantity-controls';
 
-import { beforeDiscountPrice, cn } from '@/shared/lib';
 import { LoadingBounce } from '@/shared/components';
+import { cn } from '@/shared/lib';
 
 interface Props {
   className?: string;
@@ -62,9 +62,9 @@ export const CartItem: React.FC<Props> = ({ item }) => {
             <div className='flex items-center gap-2'>
               <span className='font-bold text-lg'>{item.price} ₽</span>
               {/* //!ПЕРЕДЕЛАТЬ */}
-              {item.sale && (
+              {item.oldPrice && (
                 <span className='text-sm text-muted-foreground line-through'>
-                  {beforeDiscountPrice(item.price, item.sale)} ₽
+                  {item.oldPrice} ₽
                 </span>
               )}
             </div>

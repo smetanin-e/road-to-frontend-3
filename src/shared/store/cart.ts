@@ -21,6 +21,7 @@ const defaultState = {
   items: [],
   totalAmount: 0,
   totalQuantity: 0,
+  totalSale: 0,
 };
 
 interface CartState {
@@ -29,6 +30,7 @@ interface CartState {
   items: CartItemState[];
   totalAmount: number;
   totalQuantity: number;
+  totalSale: number;
 
   /* Запрос на получение товаров из корзины */
   getCartItems: () => Promise<void>;

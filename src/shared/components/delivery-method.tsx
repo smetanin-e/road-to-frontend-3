@@ -2,24 +2,25 @@
 import React from 'react';
 import { Label, RadioGroup, RadioGroupItem } from '@/shared/components/ui';
 import { useCartStore } from '../store/cart';
+import { DeliveryStatus } from '@prisma/client';
+import { DELIVERY_PRICE, FREE_DELIVERY_THRESHOLD } from '../constants';
 
 interface Props {
   className?: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: DeliveryStatus) => void;
 }
 
 export const DeliveryMethod: React.FC<Props> = ({ value, onChange }) => {
   const { totalAmount } = useCartStore();
-  const freeDeliveryThreshold = 2000;
 
-  const discount = totalAmount > freeDeliveryThreshold;
+  const discount = totalAmount > FREE_DELIVERY_THRESHOLD;
 
   return (
     <RadioGroup value={value} onValueChange={onChange}>
       <div className='space-y-3'>
         <div className='flex items-center  space-x-2 p-3 border rounded-lg'>
-          <RadioGroupItem value='standard' id='standard' />
+          <RadioGroupItem value={DeliveryStatus.STANDART} id='standard' />
           <Label htmlFor='standard' className='flex-1 cursor-pointer'>
             <div className='w-full flex justify-between items-center'>
               <div>
@@ -36,7 +37,7 @@ export const DeliveryMethod: React.FC<Props> = ({ value, onChange }) => {
         </div>
 
         <div className='flex items-center space-x-2 p-3 border rounded-lg'>
-          <RadioGroupItem value='express' id='express' />
+          <RadioGroupItem value={DeliveryStatus.EXPRESS} id='express' />
           <Label htmlFor='express' className='flex-1 cursor-pointer'>
             <div className='w-full flex justify-between items-center'>
               <div>
@@ -44,16 +45,16 @@ export const DeliveryMethod: React.FC<Props> = ({ value, onChange }) => {
                 <p className='text-sm text-muted-foreground'>1-2 рабочих дня</p>
               </div>
               {discount ? (
-                <span className='font-medium'>250 ₽</span>
+                <span className='font-medium'>{DELIVERY_PRICE / 2} ₽</span>
               ) : (
-                <span className='font-medium'>500 ₽</span>
+                <span className='font-medium'>{DELIVERY_PRICE} ₽</span>
               )}
             </div>
           </Label>
         </div>
 
         <div className='flex items-center space-x-2 p-3 border rounded-lg'>
-          <RadioGroupItem value='pickup' id='pickup' />
+          <RadioGroupItem value={DeliveryStatus.PICKUP} id='pickup' />
           <Label htmlFor='pickup' className='flex-1 cursor-pointer '>
             <div className='w-full flex justify-between items-center'>
               <div>

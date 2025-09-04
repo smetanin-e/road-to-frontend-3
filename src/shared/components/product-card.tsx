@@ -7,6 +7,7 @@ import { useCartStore } from '../store/cart';
 import React from 'react';
 import { Spinner } from '@/shared/components/';
 import Link from 'next/link';
+import { salePercent } from '../lib';
 interface Props {
   className?: string;
   book: BookDTO;
@@ -43,7 +44,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
 
           {book.oldPrice && book.oldPrice > book.price && (
             <Badge className='absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white'>
-              {Math.round(((book.oldPrice - book.price) / book.oldPrice) * 100)} %
+              {salePercent(book.oldPrice, book.price)} %
             </Badge>
           )}
 

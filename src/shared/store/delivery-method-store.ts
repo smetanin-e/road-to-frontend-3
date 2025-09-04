@@ -10,7 +10,7 @@ interface State {
 }
 
 export const useDeliveryStore = create<State>()((set) => ({
-  deliveryMethod: 'STANDART',
+  deliveryMethod: DeliveryStatus.STANDART,
   setDeliveryMethod: (method) => {
     set({ deliveryMethod: method });
   },

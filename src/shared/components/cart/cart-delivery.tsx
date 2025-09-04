@@ -12,14 +12,8 @@ interface Props {
 export const CartDelivery: React.FC<Props> = () => {
   const { deliveryMethod, setDeliveryMethod } = useDeliveryStore();
 
-  const handleChange = (value: string) => {
-    if (
-      value === DeliveryStatus.EXPRESS ||
-      value === DeliveryStatus.STANDART ||
-      value === DeliveryStatus.PICKUP
-    ) {
-      setDeliveryMethod(value);
-    }
+  const handleChange = (value: DeliveryStatus) => {
+    setDeliveryMethod(value);
   };
   return (
     <Card>

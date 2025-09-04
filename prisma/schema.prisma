@@ -161,8 +161,8 @@ model CartItem {
 model Order {
     id Int @id @default(autoincrement())
 
-    userId String? @unique
-    user   User?   @relation(fields: [userId], references: [id])
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
 
     status    OrderStatus @default(PENDING)
     paymentId String?
@@ -173,8 +173,8 @@ model Order {
     fullname String
     email    String
     phone    String
-    address  String
-    comment  String
+    address  String?
+    comment  String?
 
     itemsAmount   Int
     deliveryPrice Int

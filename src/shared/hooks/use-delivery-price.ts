@@ -1,11 +1,11 @@
+import { DeliveryStatus } from '@prisma/client';
 import { FREE_DELIVERY_THRESHOLD } from '../constants';
-import { DeliveryMethodType } from '../store/delivery-method-store';
 
-export const useDeliveryPrice = (totalAmount: number, deliveryMethod: DeliveryMethodType) => {
-  const deliveryPrices: Record<DeliveryMethodType, number> = {
-    express: totalAmount > FREE_DELIVERY_THRESHOLD ? 250 : 500,
-    standard: totalAmount > FREE_DELIVERY_THRESHOLD ? 0 : 200,
-    pickup: 0,
+export const useDeliveryPrice = (totalAmount: number, deliveryMethod: DeliveryStatus) => {
+  const deliveryPrices: Record<DeliveryStatus, number> = {
+    EXPRESS: totalAmount > FREE_DELIVERY_THRESHOLD ? 250 : 500,
+    STANDART: totalAmount > FREE_DELIVERY_THRESHOLD ? 0 : 200,
+    PICKUP: 0,
   };
 
   return deliveryPrices[deliveryMethod];

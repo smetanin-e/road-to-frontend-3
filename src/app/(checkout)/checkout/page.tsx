@@ -26,6 +26,8 @@ import { OrderItems } from '@/shared/components/checkout/order-items';
 import { Agreement } from '@/shared/components/checkout/agreement';
 import { useUserStore } from '@/shared/store/user';
 import { DeliveryStatus } from '@prisma/client';
+import { createOrder } from '@/shared/services/order';
+import { useRouter } from 'next/navigation';
 
 export interface CheckoutFormValues {
   firstName: string;
@@ -33,11 +35,12 @@ export interface CheckoutFormValues {
   phone: string;
   email: string;
   deliveryType: DeliveryStatus;
-  address?: string;
-  comment?: string;
+  address?: string | undefined;
+  comment?: string | undefined;
 }
 
 export default function Checkout() {
+  const router = useRouter();
   const { user } = useUserStore();
   const { deliveryMethod } = useDeliveryStore();
   const { totalAmount } = useCartStore();
@@ -54,8 +57,15 @@ export default function Checkout() {
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
-      console.log(data);
-
+      const payload = {
+        ...data,
+        deliveryPrice,
+        itemsAmount: totalAmount,
+        totalAmount: totalAmount + deliveryPrice,
+      };
+      console.log(payload);
+      await createOrder(payload);
+      router.replace('/');
       toast.success('Ваш заказ принят', { icon: '✅' });
     } catch (error) {
       if (error instanceof Error) {
