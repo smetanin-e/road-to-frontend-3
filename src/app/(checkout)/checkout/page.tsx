@@ -35,7 +35,7 @@ export interface CheckoutFormValues {
   phone: string;
   email: string;
   deliveryType: DeliveryStatus;
-  address?: string | undefined;
+  address?: string;
   comment?: string | undefined;
 }
 
@@ -63,7 +63,7 @@ export default function Checkout() {
         itemsAmount: totalAmount,
         totalAmount: totalAmount + deliveryPrice,
       };
-      console.log(payload);
+
       await createOrder(payload);
       router.replace('/');
       toast.success('Ваш заказ принят', { icon: '✅' });

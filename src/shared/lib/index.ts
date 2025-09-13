@@ -10,3 +10,5 @@ export { getCartDetails } from './get-cart-details';
 export { salePercent } from './sale-percent';
 export { authorInitials } from './author-initials';
 export { mergeCarts } from './merge-carts';
+
+export { sendEmail } from './send-email';
