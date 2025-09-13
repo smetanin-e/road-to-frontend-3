@@ -11,7 +11,7 @@ import {
   Separator,
 } from '@/shared/components/ui';
 
-import { DeliveryOptions, OrderSummary } from '@/shared/components';
+import { DeliveryOptions, LoadingBounce, OrderSummary } from '@/shared/components';
 import { useDeliveryStore } from '@/shared/store/delivery-method-store';
 import { DeliveryAddress } from '@/shared/components/checkout/delivery-address';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -28,6 +28,7 @@ import { useUserStore } from '@/shared/store/user';
 import { DeliveryStatus } from '@prisma/client';
 import { createOrder } from '@/shared/services/order';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 export interface CheckoutFormValues {
   firstName: string;
@@ -45,6 +46,7 @@ export default function Checkout() {
   const { deliveryMethod } = useDeliveryStore();
   const { totalAmount } = useCartStore();
   const deliveryPrice = useDeliveryPrice(totalAmount, deliveryMethod);
+  const [submitting, setSubmitting] = React.useState(false);
   const form = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutFormSchema),
     defaultValues: {
@@ -57,6 +59,7 @@ export default function Checkout() {
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
+      setSubmitting(true);
       const payload = {
         ...data,
         deliveryPrice,
@@ -67,9 +70,11 @@ export default function Checkout() {
       await createOrder(payload);
       router.replace('/');
       toast.success('Ваш заказ принят', { icon: '✅' });
+      setSubmitting(false);
     } catch (error) {
       if (error instanceof Error) {
         console.log('Error [CHECKOUT_FORM]', error);
+        setSubmitting(false);
         return toast.error(error.message, { icon: '❌' });
       }
     }
@@ -140,9 +145,15 @@ export default function Checkout() {
                     <CardContent className='p-4 space-y-4'>
                       <Agreement />
 
-                      <Button className='w-full' size='lg' type='submit'>
-                        <CreditCard className='mr-2 h-4 w-4' />
-                        Оформить заказ на {deliveryPrice + totalAmount} ₽
+                      <Button className='w-full relative' size='lg' type='submit'>
+                        {submitting ? (
+                          <LoadingBounce />
+                        ) : (
+                          <>
+                            <CreditCard className='mr-2 h-4 w-4' />
+                            Оформить заказ на{deliveryPrice + totalAmount} ₽
+                          </>
+                        )}
                       </Button>
                     </CardContent>
                   </Card>

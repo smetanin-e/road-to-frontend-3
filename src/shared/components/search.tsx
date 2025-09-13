@@ -1,8 +1,7 @@
 import React from 'react';
 import { Button, Input } from '@/shared/components/ui';
-import { Book } from '@prisma/client';
 import { useClickAway, useDebounce } from 'react-use';
-import { Search } from 'lucide-react';
+
 import Link from 'next/link';
 import { cn } from '@/shared/lib';
 import { Api } from '../services';

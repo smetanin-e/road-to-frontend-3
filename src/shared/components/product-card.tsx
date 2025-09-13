@@ -87,7 +87,7 @@ export const ProductCard: React.FC<Props> = ({ book }) => {
           ) : (
             <Button disabled={loading} onClick={handleAddToCart} className='w-full ' size='lg'>
               {loading ? (
-                <Spinner className='mr-2 h-4 w-4' />
+                <Spinner className='h-4 w-4' />
               ) : (
                 <div className='flex gap-2 items-center justify-center'>
                   <ShoppingCart className='mr-2 h-4 w-4' /> <span>Добавить в корзину</span>

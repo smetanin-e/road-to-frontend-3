@@ -34,7 +34,11 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 
       onClose?.();
       if (returnUrl) {
-        router.replace(returnUrl);
+        if (returnUrl === '/blocked-checkout') {
+          router.replace('/cart');
+        } else {
+          router.replace(returnUrl);
+        }
       }
 
       toast.success('Вы успешно вошли в аккаунт', { icon: '✅' });

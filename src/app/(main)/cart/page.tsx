@@ -160,7 +160,7 @@ export default function Cart() {
                       >
                         <CardContent className='p-3'>
                           <Image
-                            src={`/placeholder.svg?height=120&width=80&query=${book.title} book cover`}
+                            src={`https://avatars.mds.yandex.net/i?id=a8de2b7696fcabf3ad1e3b61017303ae7e15c02d-17021924-images-thumbs&n=13`}
                             alt={book.title}
                             width={80}
                             height={120}
